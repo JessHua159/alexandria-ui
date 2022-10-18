@@ -5,7 +5,7 @@ Front-end is on XAMPP. To create a local deployment of it, follow these instruct
 
 1. Download XAMPP for your OS from [Apache Friends](https://www.apachefriends.org/index.html).
 
-2. Follow the corresponding instructions. If prompted, select an empty folder to install XAMPP in. For Windows, it is recommended not to install it directly under the root OS folder.
+2. Follow the corresponding instructions. If prompted, select an empty folder to install XAMPP in.
 
 3. Clone this repository into `<path of XAMPP>/htdocs` folder.
 
