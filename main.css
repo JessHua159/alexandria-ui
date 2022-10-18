@@ -1,0 +1,10 @@
+header {
+    color: #226cad;
+    text-align: center;
+}
+
+.account_info {
+    margin: auto;
+    width: 30%;
+    padding: 2rem;
+}
