@@ -1,7 +1,7 @@
 # UI for Alexandria
 Back-end can be found [here](https://github.com/anirban-a/alexandria).
 
-Front-end is on XAMPP. To create a local deployment of it, follow these instructions:
+Front-end can be viewed on XAMPP. To create a local deployment of it, follow these instructions:
 
 1. Download XAMPP for your OS from [Apache Friends](https://www.apachefriends.org/index.html).
 
