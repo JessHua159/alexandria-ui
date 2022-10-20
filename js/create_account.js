@@ -1,3 +1,5 @@
+import { localSpringBootServerUrl } from "./vars.js";
+
 const highlightInputFieldColor = "rgb(29, 39, 48)";
 
 $(document).ready(() => {
@@ -6,7 +8,7 @@ $(document).ready(() => {
         const { valid, universityName, email, password } = checkAccountInfoValid();
         if (valid) {
             console.log("Account information valid.");
-            createAccount({ universityName, email, password });
+            sendAccountInfo({ universityName, email, password });
         }
     });
 
@@ -96,7 +98,7 @@ const checkPassword = password => {
 
     let numUppercaseLetters = 0, numLowercaseLetters = 0, numNumbers = 0;
     for (let i = 0; i < passwordLength; i++) {
-        c = password[i];
+        const c = password[i];
         if (!isNaN(c)) {
             numNumbers++;
         } else {
@@ -119,8 +121,66 @@ const highlightInputField = inputField => {
 
 const resetStyle = element => element.attr("style", "");
 
-const createAccount = ({universityName, email, password}) => {
-    console.log(universityName);
-    console.log(email);
-    console.log(password);
+// Sends account info to respective Spring Boot route
+const sendAccountInfo = ({universityName, email, password}) => {
+    // Create ajax request with respective info
+    // Password is encoded after it is sent to the Spring Boot back-end
+    const accountInfo = {
+        university: universityName,
+        primaryEmail: email,
+        password
+    };
+    
+    const accountInfoJSON = JSON.stringify(accountInfo);
+
+    const ajaxRequestToSendAccountInfo = $.ajax({
+        type: "POST",
+        url: `${localSpringBootServerUrl}/api/signup`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        data: accountInfoJSON
+    });
+
+    // .done() for success:
+    // .fail() for error:
+    // .always() for complete:
+    
+    ajaxRequestToSendAccountInfo.done(data => {
+        console.log("Account has been successfully created.");
+        console.log(`Data returned: ${data}`);
+        loginUser({ email, password})
+    }).fail(err => {
+        console.log("Account has not been created.");
+        $(".account-creation-error-message").text(`There is an error with account creation. Error: ${err.statusText}.`);
+    });
 };
+
+const loginUser = ({email, password}) => {
+    // Send ajax request to log in user
+    const accountInfo = {
+        primaryEmail: email,
+        password
+    };
+    
+    const accountInfoJSON = JSON.stringify(accountInfo);
+
+    const ajaxRequestToSendLoginInfo = $.ajax({
+        type: "GET",
+        url: `${localSpringBootServerUrl}/api/signup`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        data: accountInfoJSON
+    });
+
+    ajaxRequestToSendLoginInfo.done(data => {
+        console.log("Login successful.");
+        console.log(`Data returned: ${data}`);
+        // Get JWT token and store that in vars.js
+        // Redirect user to home page
+    }).fail(err => {
+        console.log("Login failed.");
+        $(".account-creation-error-message").text(`There is an error with login after account creation. Error: ${err.statusText}.`);
+    });
+}
