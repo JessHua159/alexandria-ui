@@ -3,8 +3,108 @@ header {
     text-align: center;
 }
 
-.account_info {
-    margin: auto;
-    width: 30%;
-    padding: 2rem;
+h1 {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 57px;
+    font-weight: 100;
+    color: #5A5A5A;
+    width: fit-content;
+    margin-top: 200px;
+    margin-bottom: 50px;
+    margin-left: 5%;
 }
+
+.navbar {
+    width: 100%;
+    height: 50px;
+    background-color: #ff3d3d;
+}
+
+ul.left-nav {
+    float: left;
+    list-style-type: none;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 100;
+}
+
+ul.nav {
+    float: left;
+    list-style-type: none;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 100;
+}
+
+ul.right-nav {
+    float: right;
+    padding-right: 25px;
+    list-style-type: none;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 100;
+    width: fit-content;
+}
+
+li {
+    display: block;
+    float: left;
+    margin-right: 10px;
+}
+
+li.token-display {
+  float: right;
+  width: fit-content;
+  color: white;
+  text-decoration: none;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-decoration: none;
+}
+
+
+.submit-button {
+  display: block;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background-color: #ff3d3d;
+  width: 300px;
+  height: 50px;
+  border-radius: 10px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 23px;
+  font-weight: 100;
+  color: #ededed;
+  background-size: 100% 100%;
+  box-shadow:  0px 5px 10px 0px rgba(0, 0, 0, 0.4);
+}
+
+.account_info {
+    display: block;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 100;
+    color: #232323;
+    width: fit-content;
+    position: left;
+    margin-top: 5%;
+    margin-left: 5%;
+}
+
+.account_info input{
+    width: 500px;
+    height: 40px;
+    border-radius: 4px;
+    border: solid;
+    border-color: #BEBEBE;
+    margin-top: 0.5%;
+    margin-bottom: 5%;
+    text-indent: 2%;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 100;
+}
+
+
+
