@@ -1,14 +1,13 @@
-import { localSpringBootServerUrl } from "./vars.js";
-
-const highlightInputFieldColor = "rgb(29, 39, 48)";
+import { highlightInputField, resetStyle, checkStringNotEmpty } from "./vars_and_helpers.js";
+import { sendAccountInfo } from "./requests.js"
 
 $(document).ready(() => {
     $(".submit-button").click(e => {
         e.preventDefault();
-        const { valid, universityName, email, password } = checkAccountInfoValid();
+        const { valid, universityName, username, firstName, lastName, email, password } = checkAccountInfoValid();
         if (valid) {
             console.log("Account information valid.");
-            sendAccountInfo({ universityName, email, password });
+            sendAccountInfo({ universityName, username, firstName, lastName, email, password });
         }
     });
 
@@ -18,22 +17,55 @@ $(document).ready(() => {
 // Highlights and updates respective label text value of invalid fields
 const checkAccountInfoValid = () => {
     const universityNameField = $("input#university"),
-        universityName = universityNameField.val(),
+            universityName = universityNameField.val(),
+            usernameField = $("input#username"),
+            username = usernameField.val(),
+            firstNameField = $("input#first-name"),
+            firstName = firstNameField.val(),
+            lastNameField = $("input#last-name"),
+            lastName = lastNameField.val(),
             emailField = $("input#email"),
             email = emailField.val(),
             passwordField = $("input#password"),
             password = passwordField.val();
 
-    const isUniversityValid = checkUniversityName(universityName),
+    const isUniversityValid = checkStringNotEmpty(universityName),
+        isUsernameValid = checkStringNotEmpty(username),
+        isFirstNameValid = checkStringNotEmpty(firstName),
+        isLastNameValid = checkStringNotEmpty(lastName),
         isEmailValid = checkEmail(email),
         isPasswordValid = checkPassword(password);
 
     if (!isUniversityValid) {
-        $("label#university").text("University (value invalid)");    // or university name is not in database
+        $("label#university").text("University (value invalid)");  
         highlightInputField(universityNameField);
     } else {
         $("label#university").text("University");
         resetStyle(universityNameField);
+    }
+
+    if (!isUsernameValid) {
+        $("label#username").text("Username (value invalid)");
+        highlightInputField(usernameField);
+    } else {
+        $("label#username").text("Username");
+        resetStyle(usernameField);
+    }
+
+    if (!isFirstNameValid) {
+        $("label#first-name").text("First Name (value invalid)");
+        highlightInputField(firstNameField);
+    } else {
+        $("label#first-name").text("First Name");
+        resetStyle(firstNameField);
+    }
+
+    if (!isLastNameValid) {
+        $("label#last-name").text("Last Name (value invalid)"); 
+        highlightInputField(lastNameField);
+    } else {
+        $("label#last-name").text("Last Name");
+        resetStyle(lastNameField);
     }
 
     if (!isEmailValid) {
@@ -53,16 +85,7 @@ const checkAccountInfoValid = () => {
     }
 
     return { valid: isUniversityValid && isEmailValid && isPasswordValid, 
-        universityName, email, password };
-};
-
-// Checks that the universityName value is valid.
-const checkUniversityName = universityName => {
-    // Gets valid university names from back-end
-    // const validUniversityNames = <result of ajax request to back-end for university names>
-    // Checks that universityName is in validUniversityNames
-
-    return (universityName != null && universityName.length > 0)
+        universityName, username, firstName, lastName, email, password };
 };
 
 // Checks that the email field is valid.
@@ -112,75 +135,3 @@ const checkPassword = password => {
 
     return (numUppercaseLetters > 0 && numLowercaseLetters > 0 && numNumbers > 0);
 };
-
-const highlightInputField = inputField => {
-    inputField.css("outline", "none");
-    inputField.css("border-color", highlightInputFieldColor);
-    inputField.css("box-shadow", `0 0 3px ${highlightInputFieldColor}`);
-};
-
-const resetStyle = element => element.attr("style", "");
-
-// Sends account info to respective Spring Boot route
-const sendAccountInfo = ({universityName, email, password}) => {
-    // Create ajax request with respective info
-    // Password is encoded after it is sent to the Spring Boot back-end
-    const accountInfo = {
-        university: universityName,
-        primaryEmail: email,
-        password
-    };
-    
-    const accountInfoJSON = JSON.stringify(accountInfo);
-
-    const ajaxRequestToSendAccountInfo = $.ajax({
-        type: "POST",
-        url: `${localSpringBootServerUrl}/api/signup`,
-        headers: {
-            "Content-Type": "application/json",
-        },
-        data: accountInfoJSON
-    });
-
-    // .done() for success:
-    // .fail() for error:
-    // .always() for complete:
-    
-    ajaxRequestToSendAccountInfo.done(data => {
-        console.log("Account has been successfully created.");
-        console.log(`Data returned: ${data}`);
-        loginUser({ email, password})
-    }).fail(err => {
-        console.log("Account has not been created.");
-        $(".account-creation-error-message").text(`There is an error with account creation. Error: ${err.statusText}.`);
-    });
-};
-
-const loginUser = ({email, password}) => {
-    // Send ajax request to log in user
-    const accountInfo = {
-        primaryEmail: email,
-        password
-    };
-    
-    const accountInfoJSON = JSON.stringify(accountInfo);
-
-    const ajaxRequestToSendLoginInfo = $.ajax({
-        type: "GET",
-        url: `${localSpringBootServerUrl}/api/signup`,
-        headers: {
-            "Content-Type": "application/json",
-        },
-        data: accountInfoJSON
-    });
-
-    ajaxRequestToSendLoginInfo.done(data => {
-        console.log("Login successful.");
-        console.log(`Data returned: ${data}`);
-        // Get JWT token and store that in vars.js
-        // Redirect user to home page
-    }).fail(err => {
-        console.log("Login failed.");
-        $(".account-creation-error-message").text(`There is an error with login after account creation. Error: ${err.statusText}.`);
-    });
-}
