@@ -4,6 +4,8 @@ import { sendAccountInfo } from "./requests.js"
 $(document).ready(() => {
     $(".submit-button").click(e => {
         e.preventDefault();
+        $(".submit-message").text("");
+
         const { valid, universityName, username, firstName, lastName, email, password } = checkAccountInfoValid();
         if (valid) {
             console.log("Account information valid.");
@@ -37,7 +39,7 @@ const checkAccountInfoValid = () => {
         isPasswordValid = checkPassword(password);
 
     if (!isUniversityValid) {
-        $("label#university").text("University (value invalid)");  
+        $("label#university").text(`University (value invalid)`);  
         highlightInputField(universityNameField);
     } else {
         $("label#university").text("University");
@@ -53,23 +55,23 @@ const checkAccountInfoValid = () => {
     }
 
     if (!isFirstNameValid) {
-        $("label#first-name").text("First Name (value invalid)");
+        $("label#first-name").text("First name (value invalid)");
         highlightInputField(firstNameField);
     } else {
-        $("label#first-name").text("First Name");
+        $("label#first-name").text("First name");
         resetStyle(firstNameField);
     }
 
     if (!isLastNameValid) {
-        $("label#last-name").text("Last Name (value invalid)"); 
+        $("label#last-name").text("Last name (value invalid)"); 
         highlightInputField(lastNameField);
     } else {
-        $("label#last-name").text("Last Name");
+        $("label#last-name").text("Last name");
         resetStyle(lastNameField);
     }
 
     if (!isEmailValid) {
-        $("label#email").text("Email (invalid email)");
+        $("label#email").text("Email (invalid email, must be in form of <something>@<something>.<domain>)");
         highlightInputField(emailField);
     } else {
         $("label#email").text("Email");
@@ -99,13 +101,23 @@ const checkEmail = email => {
         return false;
     } 
 
+    let dotSymbolIndex = email.indexOf(".");
+    if (dotSymbolIndex == -1) {
+        return false;
+    }
+
     let beforeAtSymbol = email.substring(0, atSymbolIndex);
     if (beforeAtSymbol.length == 0) {
         return false;
     }
 
-    let afterAtSymbol = email.substring(atSymbolIndex + 1);
-    if (afterAtSymbol.length == 0) {
+    let afterAtSymbolBeforeDot = email.substring(atSymbolIndex + 1, dotSymbolIndex);
+    if (afterAtSymbolBeforeDot.length == 0) {
+        return false;
+    }
+
+    let afterDotSymbol = email.substring(dotSymbolIndex + 1);
+    if (afterDotSymbol.length == 0) {
         return false;
     }
 
