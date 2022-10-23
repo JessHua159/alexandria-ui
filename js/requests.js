@@ -46,7 +46,10 @@ const sendAccountInfo = ({ universityName, username, firstName, lastName, email,
             $("label#username").text(`Username (${err.responseJSON.message})`);
             highlightInputField($("input#username"));
             submitMessageText = `There is an error with account creation.`;
-        } 
+        } else {
+            $("label#username").text("Username");
+            resetStyle($("input#username"));
+        }
 
         $(".submit-message").text(submitMessageText);
     });
