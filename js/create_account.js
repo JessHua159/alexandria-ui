@@ -86,7 +86,7 @@ const checkAccountInfoValid = () => {
         resetStyle(passwordField);
     }
 
-    return { valid: isUniversityValid && isEmailValid && isPasswordValid, 
+    return { valid: isUniversityValid && isUsernameValid && isFirstNameValid && isLastNameValid && isEmailValid && isPasswordValid, 
         universityName, username, firstName, lastName, email, password };
 };
 
