@@ -41,7 +41,14 @@ const sendAccountInfo = ({ universityName, username, firstName, lastName, email,
         console.log("Error: ")
         console.log(err);
 
-        $(".submit-message").text(`There is an error with account creation. Return code: ${err.status}. Error: ${err.statusText}.`);
+        let submitMessageText = `There is an error with account creation. Return code: ${err.status}. Error: ${err.statusText}.`;
+        if (err.status == 400 && err.responseJSON.message.indexOf("username") != -1) {
+            $("label#username").text(`Username (${err.responseJSON.message})`);
+            highlightInputField($("input#username"));
+            submitMessageText = `There is an error with account creation.`;
+        } 
+
+        $(".submit-message").text(submitMessageText);
     });
 };
 
@@ -62,6 +69,7 @@ const loginUser = ({ username, password }, fromAccountCreation) => {
             "Content-Type": "application/json",
         },
         data: accountInfoJSON,
+        dataType: "json",
         crossDomain: true
     });
 
