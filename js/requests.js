@@ -55,7 +55,7 @@ const loginUser = ({ username, password }, fromAccountCreation) => {
     const accountInfoJSON = JSON.stringify(accountInfo);
 
     const ajaxRequestToSendLoginInfo = $.ajax({
-        beforeSend: xhr => xhr.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password)),
+        beforeSend: xhr => xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password)),
         type: "GET",
         url: `${localSpringBootServerUrl}/api/login`,
         headers: {
@@ -67,8 +67,6 @@ const loginUser = ({ username, password }, fromAccountCreation) => {
 
     ajaxRequestToSendLoginInfo.done(data => {
         console.log("Login successful.");
-        console.log("Data returned: ");
-        console.log(data);
 
         if (fromAccountCreation) {
             let submitButtonVal = $("input#submit-button").val();
@@ -76,19 +74,23 @@ const loginUser = ({ username, password }, fromAccountCreation) => {
             $("input#submit-button").val(submitButtonVal);
         }
 
-        sessionStorage.setItem("token", data.jwt)   // stores jwt token to session storage
+        // stores jwt token and user username to session storage
+        // user username to session storage so that it can be accessed for navbar 
+        sessionStorage.setItem("token", data.jwt);   
+        sessionStorage.setItem("username", username);
 
-        $(".submit-message").text(fromAccountCreation ? `Account with username ${username} has been created. You have been logged in.` : "You have been logged in.");
+        window.location = "index.html";
+
+        // $(".submit-message").text(fromAccountCreation ? `Account with username ${username} has been created. You have been logged in.` : "You have been logged in.");
     }).fail(err => {
         console.log("Login failed.");
-        console.log("Error: ");
-        console.log(err);
 
         let statusNo = err.status;
         if (statusNo == 401)    // Invalid login credentials
             if (!fromAccountCreation) { 
                 highlightInputField($("input#username"));
-                highlightInputField($("password#password"));
+                highlightInputField($("input#password"));
+                $(".submit-message").text(`Incorrect username or password`);
             } else {
                 $(".submit-message").text(`Unable to login after account creation`);
             }
@@ -98,4 +100,13 @@ const loginUser = ({ username, password }, fromAccountCreation) => {
     });
 };
 
-export { sendAccountInfo, loginUser };
+const checkUserLoggedIn = () => {
+    let tokenVal = sessionStorage.getItem("token");
+    if (tokenVal == null) {
+        return false;
+    }
+
+    return true;
+};
+
+export { sendAccountInfo, loginUser, checkUserLoggedIn };

@@ -27,13 +27,6 @@ ul.left-nav {
     font-weight: 100;
 }
 
-ul.nav {
-    float: left;
-    list-style-type: none;
-    font-family: 'Work Sans', sans-serif;
-    font-weight: 100;
-}
-
 ul.right-nav {
     float: right;
     padding-right: 25px;

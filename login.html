@@ -5,7 +5,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="main.css">
-        <script src="js/navbar.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+        <script type="module" src="js/navbar.js"></script>
+        <script type="module" src="js/login.js"></script>
 
         <title>Alexandria - Login</title>
     </head>
@@ -13,26 +15,30 @@
         <!-- navbar for website navigation -->
         <div class="navbar">
             <div class="container">
-                <ul class="nav">
+                <ul class="left-nav">
+                    <li><a class="logo" href="index.html">Alexandria</a></li>
                     <li><a href="#">Collection</a></li>
                     <li><a href="#">Exchanges</a></li>
                     <li><a href="#">Donations</a></li>
                     <li><a href="#">Notifications</a></li>
                     <li><a href="#">Profile</a></li>
-                    <li><a href="#">Create Account</a></li>
-                    <li class="current"><a href="#">Login</a></li>
+                    <li><a href="create_account.html">Create Account</a></li>
+                    <li id="login-or-logout" class="current"></li>
                 </ul>
 
                 <ul class="right-nav">
+                    <li class="profile-username" id="profile-username"></li>    <!-- class one for selection by css, id one for selection by jQuery -->
                     <li class="token-display"><span>(token icon)</span> Tokens: 0</li>
                 </ul>
             </div>
         </div>
-
+        
+        <!-- header -->
         <header>
             <h1>Login</h1>
         </header>
 
+        <!-- account information section -->
         <section class="account_info">
             <div class="container">
                 <form action="#">
@@ -43,6 +49,7 @@
                     <input type="password" id="password" value=""><br>
     
                     <input type="submit" class="submit-button" value="Login">
+                    <p class="submit-message"></p>
                 </form>
             </div>
         </section>
