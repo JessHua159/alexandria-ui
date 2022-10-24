@@ -3,14 +3,19 @@ header {
     text-align: center;
 }
 
+.desc {
+    font-size: 15px;
+    color: gray;
+}
+
 h1 {
     font-family: 'Work Sans', sans-serif;
     font-size: 57px;
     font-weight: 100;
     color: #5A5A5A;
     width: fit-content;
-    margin-top: 200px;
-    margin-bottom: 50px;
+    margin-top: 80px;
+    margin-bottom: 75px;
     margin-left: 5%;
 }
 

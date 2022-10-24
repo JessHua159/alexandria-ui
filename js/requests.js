@@ -1,4 +1,4 @@
-import { highlightInputField, localSpringBootServerUrl } from "./vars_and_helpers.js"
+import { highlightInputField, resetStyle, localSpringBootServerUrl } from "./vars_and_helpers.js"
 
 // Sends ajax request to create account
 const sendAccountInfo = ({ universityName, username, firstName, lastName, email, password }) => {
