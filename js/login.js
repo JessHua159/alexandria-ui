@@ -1,4 +1,4 @@
-import { checkStringNotEmpty, highlightInputField, resetStyle } from "./vars_and_helpers.js";
+import { checkStringNotEmpty, highlightText, highlightInputField, resetStyle } from "./vars_and_helpers.js";
 import { loginUser } from "./requests.js"
 
 $(document).ready(() => {
@@ -27,20 +27,25 @@ const checkAccountInfoValid = () => {
             isPasswordValid = checkStringNotEmpty(password);
 
     if (!isUsernameValid) {
-        $("label#username").text("Username (you did not enter in an username)");
+        $("label#username-desc").text("Invalid Response: Enter your username");
+        highlightText("username-desc", "red");
         highlightInputField(usernameField);
     } else {
-        $("label#username").text("Username");
+        $("label#username-desc").text("Enter your username");
+        highlightText("username-desc", "gray");
         resetStyle(usernameField);
     }
 
     if (!isPasswordValid) {
-        $("label#password").text("Password (you did not enter in a password)");
+        $("label#password-desc").text("Invalid Response: Enter your password");
+        highlightText("password-desc", "red");
         highlightInputField(passwordField);
     } else {
-        $("label#password").text("Password");
+        $("label#password-desc").text("Enter your password");
+        highlightText("password-desc", "gray");
         resetStyle(passwordField);
     }
+
 
     return { valid: isUsernameValid && isPasswordValid, 
         username, password };
