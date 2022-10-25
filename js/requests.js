@@ -1,4 +1,4 @@
-import { highlightInputField, resetStyle, localSpringBootServerUrl } from "./vars_and_helpers.js"
+import { highlightInputField, highlightText, localSpringBootServerUrl } from "./vars_and_helpers.js"
 
 // Sends ajax request to create account
 const sendAccountInfo = ({ universityName, username, firstName, lastName, email, password }) => {
@@ -43,12 +43,13 @@ const sendAccountInfo = ({ universityName, username, firstName, lastName, email,
 
         let submitMessageText = `There is an error with account creation. Return code: ${err.status}. Error: ${err.statusText}.`;
         if (err.status == 400 && err.responseJSON.message.indexOf("username") != -1) {
-            $("label#username").text(`Username (${err.responseJSON.message})`);
+            const usernameDesc = $("label#username-desc");
+
+            usernameDesc.text(err.responseJSON.message);
+            highlightText(usernameDesc, "red");
             highlightInputField($("input#username"));
+
             submitMessageText = `There is an error with account creation.`;
-        } else {
-            $("label#username").text("Username");
-            resetStyle($("input#username"));
         }
 
         $("p#submit-message").text(submitMessageText);
