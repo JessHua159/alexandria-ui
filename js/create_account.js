@@ -1,8 +1,26 @@
 import { highlightInputField, highlightText, resetStyle, checkStringNotEmpty } from "./vars_and_helpers.js";
 import { sendAccountInfo } from "./requests.js"
 
+const labelUniversityDesc = $("label#university-desc"),
+    universityNameField = $("input#university"),
+    labelUsernameDesc = $("label#username-desc"),
+    usernameField = $("input#username"),
+    firstNameDesc = $("label#first-name-desc"),
+    firstNameField = $("input#first-name"),
+    lastNameDesc = $("label#last-name-desc"),
+    lastNameField = $("input#last-name"),
+    emailDesc = $("label#email-desc"),
+    emailField = $("input#email"),
+    passwordDesc = $("label#password-desc"),
+    passwordField = $("input#password"),
+    confirmPasswordDesc = $("label#confirm-password-desc"),
+    confirmPasswordField = $("input#confirm-password");
+
+const submitButton = $(".submit-button"),
+    submitMessage = $(".submit-message");
+
 $(document).ready(() => {
-    $(".submit-button").click(e => {
+    submitButton.click(e => {
         e.preventDefault();
         resetElements();
 
@@ -15,56 +33,49 @@ $(document).ready(() => {
 
 });
 
-// Resets elements that may be updated by this script
+// Resets elements that may be updated
 const resetElements = () => {
-    $("label#university-desc").text("Enter the name of your university");
+    labelUniversityDesc.text("Enter the name of your university");
     highlightText("university-desc", "gray");
-    resetStyle($("input#university"));
+    resetStyle(universityNameField);
 
-    $("label#username-desc").text("Enter a username");
+    labelUsernameDesc.text("Enter a username");
     highlightText("username-desc", "gray");
-    resetStyle($("input#username"));
+    resetStyle(usernameField);
 
-    $("label#first-name-desc").text("Enter your first name");
+    firstNameDesc.text("Enter your first name");
     highlightText("first-name-desc", "gray");
-    resetStyle($("input#first-name"));
+    resetStyle(firstNameField);
 
-    $("label#last-name-desc").text("Enter your last name");
+    lastNameDesc.text("Enter your last name");
     highlightText("last-name-desc", "gray");
-    resetStyle($("input#last-name"));
+    resetStyle(lastNameField);
 
-    $("label#email-desc").text("Enter your email");
+    emailDesc.text("Enter your email");
     highlightText("email-desc", "gray");
-    resetStyle($("input#email"));
+    resetStyle(emailField);
 
-    $("label#password-desc").text("Password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
+    passwordDesc.text("Password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
     highlightText("password-desc", "gray");
-    resetStyle($("input#password"));
+    resetStyle(passwordField);
 
-    $("label#confirm-password-desc").text("Re-enter password");
+    confirmPasswordDesc.text("Re-enter password");
     highlightText("confirm-password-desc", "gray");
-    resetStyle($("input#confirm-password"));
+    resetStyle(confirmPasswordField);
 
-    $(".submit-message").text("");
+    submitMessage.text("");
 }
 
 // Checks that the fields have been correctly entered
 // Highlights and updates respective label text value of invalid fields
 const checkAccountInfoValid = () => {
-    const universityNameField = $("input#university"),
-            universityName = universityNameField.val(),
-            usernameField = $("input#username"),
-            username = usernameField.val(),
-            firstNameField = $("input#first-name"),
-            firstName = firstNameField.val(),
-            lastNameField = $("input#last-name"),
-            lastName = lastNameField.val(),
-            emailField = $("input#email"),
-            email = emailField.val(),
-            passwordField = $("input#password"),
-            password = passwordField.val(),
-            confirmPasswordField = $("input#confirm-password"),
-            confirmPassword = confirmPasswordField.val();
+    const universityName = universityNameField.val(),
+        username = usernameField.val(),
+        firstName = firstNameField.val(),
+        lastName = lastNameField.val(),
+        email = emailField.val(),
+        password = passwordField.val(),
+        confirmPassword = confirmPasswordField.val();
 
     const isUniversityValid = checkStringNotEmpty(universityName),
         isUsernameValid = checkStringNotEmpty(username),
@@ -75,43 +86,43 @@ const checkAccountInfoValid = () => {
         isConfirmPasswordValid = (password === confirmPassword);
 
     if (!isUniversityValid) {
-        $("label#university-desc").text("Invalid Response: Enter the name of your University");
+        labelUniversityDesc.text("Invalid Response: Enter the name of your university");
         highlightText("university-desc", "red");
         highlightInputField(universityNameField);
     }
 
     if (!isUsernameValid) {
-        $("label#username-desc").text("Invalid Response: Enter a username");
+        labelUsernameDesc.text("Invalid Response: Enter a username");
         highlightText("username-desc", "red");
         highlightInputField(usernameField);
     }
 
     if (!isFirstNameValid) {
-        $("label#first-name-desc").text("Invalid Response: Enter your first name");
+        firstNameDesc.text("Invalid Response: Enter your first name");
         highlightText("first-name-desc", "red");
         highlightInputField(firstNameField);
     }
 
     if (!isLastNameValid) {
-        $("label#last-name-desc").text("Invalid Response: Enter your last name");
+        lastNameDesc.text("Invalid Response: Enter your last name");
         highlightText("last-name-desc", "red");
         highlightInputField(lastNameField);
     }
 
     if (!isEmailValid) {
-        $("label#email-desc").text("Invalid Response: Email must be in form of <something>@<domain>.<ext> (e.g, username@college.edu)");
+        emailDesc.text("Invalid Response: Email must be in form of <something>@<domain>.<ext> (e.g, username@college.edu)");
         highlightText("email-desc", "red");
         highlightInputField(emailField);
     }
 
     if (!isPasswordValid) {
-        $("label#password-desc").text("Invalid Response: Password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
+        passwordDesc.text("Invalid Response: Password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
         highlightText("password-desc", "red");
         highlightInputField(passwordField);
     }
 
     if (!isConfirmPasswordValid) {
-        $("label#confirm-password-desc").text("Invalid Response: The entered passwords does not match");
+        confirmPasswordDesc.text("Invalid Response: The entered passwords does not match");
         highlightText("confirm-password-desc", "red");
         highlightInputField(confirmPasswordField);
     }

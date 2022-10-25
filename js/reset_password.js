@@ -1,8 +1,15 @@
 import { highlightInputField, highlightText, resetStyle, checkStringNotEmpty } from "./vars_and_helpers.js";
 
+const newPasswordDesc = $("label#password-desc"),
+    newPasswordField = $("input#password"),
+    newPasswordConfirmDesc = $("label#password-confirm-desc"),
+    newPasswordConfirmField = $("input#password-confirm");
+
+const submitButton = $(".submit-button"),
+    submitMessage = $(".submit-message");
 
 $(document).ready(() => {
-    $(".submit-button").click(e => {
+    submitButton.click(e => {
         e.preventDefault();
         resetElements();
 
@@ -14,15 +21,17 @@ $(document).ready(() => {
     });
 });
 
-// Resets elements that may be updated by this script
+// Resets elements that may be updated
 const resetElements = () => {
-    $("label#password-desc").text("Password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
+    newPasswordDesc.text("Password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
     highlightText("password-desc", "gray");
-    resetStyle($("input#password"));
+    resetStyle(newPasswordField);
 
-    $("label#password-confirm-desc").text("Re-enter new password");
+    newPasswordConfirmDesc.text("Re-enter new password");
     highlightText("password-confirm-desc", "gray");
-    resetStyle($("input#password-confirm"));
+    resetStyle(newPasswordConfirmField);
+
+    submitMessage.text("");
 }
 
 const checkValid = () => {
@@ -35,14 +44,14 @@ const checkValid = () => {
     if (isPasswordValid === false) {
         console.log("Password is not valid.");
         // Change Password text to clarify password requirements
-        $("label#password-desc").text("Invalid Password: The password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
+        newPasswordDesc.text("Invalid Password: The password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
         highlightText("password-desc", "red");
         highlightInputField(newPasswordField);
     }
 
     const bothPasswordsMatch = (newPassword === newPasswordConfirm);
     if (bothPasswordsMatch === false) {
-        $("label#password-confirm-desc").text("Invalid Response: The entered passwords do not match");
+        newPasswordConfirmDesc.text("Invalid Response: The entered passwords do not match");
         highlightText("password-confirm-desc", "red");
         highlightInputField(newPasswordConfirmField);
     }
