@@ -4,7 +4,7 @@ import { sendAccountInfo } from "./requests.js"
 $(document).ready(() => {
     $(".submit-button").click(e => {
         e.preventDefault();
-        $(".submit-message").text("");
+        resetElements();
 
         const { valid, universityName, username, firstName, lastName, email, password } = checkAccountInfoValid();
         if (valid) {
@@ -14,6 +14,39 @@ $(document).ready(() => {
     });
 
 });
+
+// Resets elements that may be updated by this script
+const resetElements = () => {
+    $("label#university-desc").text("Enter the name of your university");
+    highlightText("university-desc", "gray");
+    resetStyle($("input#university"));
+
+    $("label#username-desc").text("Enter a username");
+    highlightText("username-desc", "gray");
+    resetStyle($("input#username"));
+
+    $("label#first-name-desc").text("Enter your first name");
+    highlightText("first-name-desc", "gray");
+    resetStyle($("input#first-name"));
+
+    $("label#last-name-desc").text("Enter your last name");
+    highlightText("last-name-desc", "gray");
+    resetStyle($("input#last-name"));
+
+    $("label#email-desc").text("Enter your email");
+    highlightText("email-desc", "gray");
+    resetStyle($("input#email"));
+
+    $("label#password-desc").text("Password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
+    highlightText("password-desc", "gray");
+    resetStyle($("input#password"));
+
+    $("label#confirm-password-desc").text("Re-enter password");
+    highlightText("confirm-password-desc", "gray");
+    resetStyle($("input#confirm-password"));
+
+    $(".submit-message").text("");
+}
 
 // Checks that the fields have been correctly entered
 // Highlights and updates respective label text value of invalid fields
@@ -45,72 +78,43 @@ const checkAccountInfoValid = () => {
         $("label#university-desc").text("Invalid Response: Enter the name of your University");
         highlightText("university-desc", "red");
         highlightInputField(universityNameField);
-    } else {
-        $("label#university-desc").text("Enter the name of your university");
-        highlightText("university-desc", "gray");
-        resetStyle(universityNameField);
     }
 
     if (!isUsernameValid) {
         $("label#username-desc").text("Invalid Response: Enter a username");
         highlightText("username-desc", "red");
         highlightInputField(usernameField);
-    } else {
-        $("label#username-desc").text("Enter a username");
-        highlightText("username-desc", "gray");
-        resetStyle(usernameField);
     }
 
     if (!isFirstNameValid) {
         $("label#first-name-desc").text("Invalid Response: Enter your first name");
         highlightText("first-name-desc", "red");
         highlightInputField(firstNameField);
-    } else {
-        $("label#first-name-desc").text("Enter your first name");
-        highlightText("first-name-desc", "gray");
-        resetStyle(firstNameField);
     }
 
     if (!isLastNameValid) {
         $("label#last-name-desc").text("Invalid Response: Enter your last name");
         highlightText("last-name-desc", "red");
         highlightInputField(lastNameField);
-    } else {
-        $("label#last-name-desc").text("Enter your last name");
-        highlightText("last-name-desc", "gray");
-        resetStyle(lastNameField);
     }
 
     if (!isEmailValid) {
         $("label#email-desc").text("Invalid Response: Email must be in form of <something>@<domain>.<ext> (e.g, username@college.edu)");
         highlightText("email-desc", "red");
         highlightInputField(emailField);
-    } else {
-        $("label#email-desc").text("Enter your email");
-        highlightText("email-desc", "gray");
-        resetStyle(emailField);
     }
 
     if (!isPasswordValid) {
         $("label#password-desc").text("Invalid Response: Password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
         highlightText("password-desc", "red");
         highlightInputField(passwordField);
-    } else {
-        $("label#password-desc").text("Password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
-        highlightText("password-desc", "gray");
-        resetStyle(passwordField);
     }
 
     if (!isConfirmPasswordValid) {
-            $("label#confirm-password-desc").text("Invalid Response: The entered passwords does not match");
-            highlightText("confirm-password-desc", "red");
-            highlightInputField(passwordField);
-        } else {
-            $("label#confirm-password-desc").text("Re-enter password");
-            highlightText("confirm-password-desc", "gray");
-            resetStyle(passwordField);
-        }
-
+        $("label#confirm-password-desc").text("Invalid Response: The entered passwords does not match");
+        highlightText("confirm-password-desc", "red");
+        highlightInputField(passwordField);
+    }
 
     return { valid: isUniversityValid && isUsernameValid && isFirstNameValid && isLastNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid,
         universityName, username, firstName, lastName, email, password };
