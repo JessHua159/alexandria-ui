@@ -6,8 +6,8 @@ const labelUsernameDesc = $("label#username-desc"),
     passwordDesc = $("label#password-desc"),
     passwordField = $("input#password");
 
-const submitButton = $(".submit-button"),
-    submitMessage = $(".submit-message");
+const submitButton = $("input#submit-button"),
+    submitMessage = $("p#submit-message");
 
 $(document).ready(() => {
     submitButton.click(e => {

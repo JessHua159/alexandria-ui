@@ -5,8 +5,8 @@ const newPasswordDesc = $("label#password-desc"),
     newPasswordConfirmDesc = $("label#password-confirm-desc"),
     newPasswordConfirmField = $("input#password-confirm");
 
-const submitButton = $(".submit-button"),
-    submitMessage = $(".submit-message");
+const submitButton = $("input#submit-button"),
+    submitMessage = $("p#submit-message");
 
 $(document).ready(() => {
     submitButton.click(e => {

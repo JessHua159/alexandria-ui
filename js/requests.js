@@ -34,7 +34,7 @@ const sendAccountInfo = ({ universityName, username, firstName, lastName, email,
         console.log("Data returned: ");
         console.log(data);
         
-        $(".submit-message").text("Account has been created.");
+        $("p#submit-message").text("Account has been created.");
         loginUser({ username, password}, true);
     }).fail(err => {
         console.log("Account has not been created.");
@@ -51,7 +51,7 @@ const sendAccountInfo = ({ universityName, username, firstName, lastName, email,
             resetStyle($("input#username"));
         }
 
-        $(".submit-message").text(submitMessageText);
+        $("p#submit-message").text(submitMessageText);
     });
 };
 
@@ -101,12 +101,12 @@ const loginUser = ({ username, password }, fromAccountCreation) => {
             if (!fromAccountCreation) { 
                 highlightInputField($("input#username"));
                 highlightInputField($("input#password"));
-                $(".submit-message").text(`Incorrect username or password`);
+                $("p#submit-message").text(`Incorrect username or password`);
             } else {
-                $(".submit-message").text(`Unable to login after account creation`);
+                $("p#submit-message").text(`Unable to login after account creation`);
             }
         else {  // Some other error
-            $(".submit-message").text(`There is an error with login. Return code: ${err.status}. Error: ${err.statusText}.`);
+            $("p#submit-message").text(`There is an error with login. Return code: ${err.status}. Error: ${err.statusText}.`);
         }
     });
 };

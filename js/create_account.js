@@ -16,8 +16,8 @@ const labelUniversityDesc = $("label#university-desc"),
     confirmPasswordDesc = $("label#confirm-password-desc"),
     confirmPasswordField = $("input#confirm-password");
 
-const submitButton = $(".submit-button"),
-    submitMessage = $(".submit-message");
+const submitButton = $("input#submit-button"),
+    submitMessage = $("p#submit-message");
 
 $(document).ready(() => {
     submitButton.click(e => {
