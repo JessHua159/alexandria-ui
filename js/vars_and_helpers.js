@@ -9,10 +9,7 @@ const highlightInputField = inputField => {
     inputField.css("box-shadow", `0 0 3px ${highlightInputFieldColor}`);
 };
 
-const highlightText = (labelName, newColor) => {
-    var label = "label#" + labelName;
-    $(label).css("color", newColor);
-};
+const highlightText = (ele, newColor) => ele.css("color", newColor);
 
 const resetStyle = element => element.attr("style", "");
 

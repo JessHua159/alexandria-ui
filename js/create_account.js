@@ -1,9 +1,9 @@
 import { highlightInputField, highlightText, resetStyle, checkStringNotEmpty } from "./vars_and_helpers.js";
 import { sendAccountInfo } from "./requests.js"
 
-const labelUniversityDesc = $("label#university-desc"),
+const universityDesc = $("label#university-desc"),
     universityNameField = $("input#university"),
-    labelUsernameDesc = $("label#username-desc"),
+    usernameDesc = $("label#username-desc"),
     usernameField = $("input#username"),
     firstNameDesc = $("label#first-name-desc"),
     firstNameField = $("input#first-name"),
@@ -35,32 +35,32 @@ $(document).ready(() => {
 
 // Resets elements that may be updated
 const resetElements = () => {
-    labelUniversityDesc.text("Enter the name of your university");
-    highlightText("university-desc", "gray");
+    universityDesc.text("Enter the name of your university");
+    highlightText(universityDesc, "gray");
     resetStyle(universityNameField);
 
-    labelUsernameDesc.text("Enter a username");
-    highlightText("username-desc", "gray");
+    usernameDesc.text("Enter a username");
+    highlightText(usernameDesc, "gray");
     resetStyle(usernameField);
 
     firstNameDesc.text("Enter your first name");
-    highlightText("first-name-desc", "gray");
+    highlightText(firstNameDesc, "gray");
     resetStyle(firstNameField);
 
     lastNameDesc.text("Enter your last name");
-    highlightText("last-name-desc", "gray");
+    highlightText(lastNameDesc, "gray");
     resetStyle(lastNameField);
 
     emailDesc.text("Enter your email");
-    highlightText("email-desc", "gray");
+    highlightText(emailDesc, "gray");
     resetStyle(emailField);
 
     passwordDesc.text("Password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
-    highlightText("password-desc", "gray");
+    highlightText(passwordDesc, "gray");
     resetStyle(passwordField);
 
     confirmPasswordDesc.text("Re-enter password");
-    highlightText("confirm-password-desc", "gray");
+    highlightText(confirmPasswordDesc, "gray");
     resetStyle(confirmPasswordField);
 
     submitMessage.text("");
@@ -86,44 +86,44 @@ const checkAccountInfoValid = () => {
         isConfirmPasswordValid = (password === confirmPassword);
 
     if (!isUniversityValid) {
-        labelUniversityDesc.text("Invalid Response: Enter the name of your university");
-        highlightText("university-desc", "red");
+        universityDesc.text("Invalid Response: Enter the name of your university");
+        highlightText(universityDesc, "red");
         highlightInputField(universityNameField);
     }
 
     if (!isUsernameValid) {
-        labelUsernameDesc.text("Invalid Response: Enter a username");
-        highlightText("username-desc", "red");
+        usernameDesc.text("Invalid Response: Enter a username");
+        highlightText(usernameDesc, "red");
         highlightInputField(usernameField);
     }
 
     if (!isFirstNameValid) {
         firstNameDesc.text("Invalid Response: Enter your first name");
-        highlightText("first-name-desc", "red");
+        highlightText(firstNameDesc, "red");
         highlightInputField(firstNameField);
     }
 
     if (!isLastNameValid) {
         lastNameDesc.text("Invalid Response: Enter your last name");
-        highlightText("last-name-desc", "red");
+        highlightText(lastNameDesc, "red");
         highlightInputField(lastNameField);
     }
 
     if (!isEmailValid) {
         emailDesc.text("Invalid Response: Email must be in form of <something>@<domain>.<ext> (e.g, username@college.edu)");
-        highlightText("email-desc", "red");
+        highlightText(emailDesc, "red");
         highlightInputField(emailField);
     }
 
     if (!isPasswordValid) {
         passwordDesc.text("Invalid Response: Password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
-        highlightText("password-desc", "red");
+        highlightText(passwordDesc, "red");
         highlightInputField(passwordField);
     }
 
     if (!isConfirmPasswordValid) {
         confirmPasswordDesc.text("Invalid Response: The entered passwords does not match");
-        highlightText("confirm-password-desc", "red");
+        highlightText(confirmPasswordDesc, "red");
         highlightInputField(confirmPasswordField);
     }
 

@@ -24,11 +24,11 @@ $(document).ready(() => {
 // Resets elements that may be updated
 const resetElements = () => {
     newPasswordDesc.text("Password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
-    highlightText("password-desc", "gray");
+    highlightText(newPasswordDesc, "gray");
     resetStyle(newPasswordField);
 
     newPasswordConfirmDesc.text("Re-enter new password");
-    highlightText("password-confirm-desc", "gray");
+    highlightText(newPasswordConfirmDesc, "gray");
     resetStyle(newPasswordConfirmField);
 
     submitMessage.text("");
@@ -45,14 +45,14 @@ const checkValid = () => {
         console.log("Password is not valid.");
         // Change Password text to clarify password requirements
         newPasswordDesc.text("Invalid Password: The password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
-        highlightText("password-desc", "red");
+        highlightText(newPasswordDesc, "red");
         highlightInputField(newPasswordField);
     }
 
     const bothPasswordsMatch = (newPassword === newPasswordConfirm);
     if (bothPasswordsMatch === false) {
         newPasswordConfirmDesc.text("Invalid Response: The entered passwords do not match");
-        highlightText("password-confirm-desc", "red");
+        highlightText(newPasswordConfirmDesc, "red");
         highlightInputField(newPasswordConfirmField);
     }
 
