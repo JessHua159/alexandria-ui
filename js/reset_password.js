@@ -4,6 +4,8 @@ import { highlightInputField, highlightText, resetStyle, checkStringNotEmpty } f
 $(document).ready(() => {
     $(".submit-button").click(e => {
         e.preventDefault();
+        resetElements();
+
         const { valid, newPassword, newPasswordConfirm } = checkValid();
         if (valid) {
             console.log("New password valid.");
@@ -12,12 +14,22 @@ $(document).ready(() => {
     });
 });
 
+// Resets elements that may be updated by this script
+const resetElements = () => {
+    $("label#password-desc").text("Password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
+    highlightText("password-desc", "gray");
+    resetStyle($("input#password"));
+
+    $("label#password-confirm-desc").text("Re-enter new password");
+    highlightText("password-confirm-desc", "gray");
+    resetStyle($("input#password-confirm"));
+}
+
 const checkValid = () => {
     const newPasswordField = $("input#password");
     const newPassword = newPasswordField.val();
     const newPasswordConfirmField = $("input#password-confirm");
     const newPasswordConfirm = newPasswordConfirmField.val();
-
 
     const isPasswordValid = checkPassword(newPassword);
     if (isPasswordValid === false) {
@@ -27,21 +39,12 @@ const checkValid = () => {
         highlightText("password-desc", "red");
         highlightInputField(newPasswordField);
     }
-    else {
-        $("label#password-desc").text("Password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
-        highlightText("password-desc", "gray");
-        resetStyle(newPasswordField);
-    }
 
     const bothPasswordsMatch = (newPassword === newPasswordConfirm);
     if (bothPasswordsMatch === false) {
         $("label#password-confirm-desc").text("Invalid Response: The entered passwords do not match");
         highlightText("password-confirm-desc", "red");
         highlightInputField(newPasswordConfirmField);
-    }
-    else {
-        $("label#password-confirm-desc").text("Re-enter new password");
-        highlightText("password-confirm-desc", "gray");
     }
 
     if (isPasswordValid && bothPasswordsMatch) {
