@@ -2,8 +2,9 @@ import { checkStringNotEmpty, highlightText, highlightInputField, resetStyle } f
 import { loginUser } from "./requests.js"
 
 const usernameDesc = $("label#username-desc"),
-    usernameField = $("input#username"),
-    passwordDesc = $("label#password-desc"),
+    usernameField = $("input#username");
+
+const passwordDesc = $("label#password-desc"),
     passwordField = $("input#password");
 
 const submitButton = $("input#submit-button"),
@@ -25,10 +26,12 @@ $(document).ready(() => {
 
 // Resets elements that may be updated
 const resetElements = () => {
+    resetStyle(usernameDesc);
     usernameDesc.text("Enter your username");
     highlightText(usernameDesc, "gray");
     resetStyle(usernameField);
 
+    resetStyle(passwordDesc);
     passwordDesc.text("Enter your password");
     highlightText(passwordDesc, "gray");
     resetStyle(passwordField);
@@ -49,13 +52,17 @@ const checkAccountInfoValid = () => {
         usernameDesc.text("Invalid Response: Enter your username");
         highlightText(usernameDesc, "red");
         highlightInputField(usernameField);
+    } else {
+        usernameDesc.css("display", "none");
     }
 
     if (!isPasswordValid) {
         passwordDesc.text("Invalid Response: Enter your password");
         highlightText(passwordDesc, "red");
         highlightInputField(passwordField);
-    } 
+    } else {
+        passwordDesc.css("display", "none");
+    }
 
     return { valid: isUsernameValid && isPasswordValid, 
         username, password };

@@ -45,6 +45,7 @@ const sendAccountInfo = ({ universityName, username, firstName, lastName, email,
         if (err.status == 400 && err.responseJSON.message.indexOf("username") != -1) {
             const usernameDesc = $("label#username-desc");
 
+            usernameDesc.css("display", "inline");
             usernameDesc.text(err.responseJSON.message);
             highlightText(usernameDesc, "red");
             highlightInputField($("input#username"));

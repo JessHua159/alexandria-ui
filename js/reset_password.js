@@ -1,8 +1,9 @@
 import { highlightInputField, highlightText, resetStyle, checkStringNotEmpty } from "./vars_and_helpers.js";
 
 const newPasswordDesc = $("label#password-desc"),
-    newPasswordField = $("input#password"),
-    newPasswordConfirmDesc = $("label#password-confirm-desc"),
+    newPasswordField = $("input#password");
+
+const newPasswordConfirmDesc = $("label#password-confirm-desc"),
     newPasswordConfirmField = $("input#password-confirm");
 
 const submitButton = $("input#submit-button"),
@@ -23,10 +24,12 @@ $(document).ready(() => {
 
 // Resets elements that may be updated
 const resetElements = () => {
+    resetStyle(newPasswordDesc);
     newPasswordDesc.text("Password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
     highlightText(newPasswordDesc, "gray");
     resetStyle(newPasswordField);
 
+    resetStyle(newPasswordConfirmDesc);
     newPasswordConfirmDesc.text("Re-enter new password");
     highlightText(newPasswordConfirmDesc, "gray");
     resetStyle(newPasswordConfirmField);
@@ -47,6 +50,8 @@ const checkValid = () => {
         newPasswordDesc.text("Invalid Password: The password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
         highlightText(newPasswordDesc, "red");
         highlightInputField(newPasswordField);
+    } else {
+        newPasswordDesc.css("display", "none");
     }
 
     const bothPasswordsMatch = (newPassword === newPasswordConfirm);
@@ -54,6 +59,8 @@ const checkValid = () => {
         newPasswordConfirmDesc.text("Invalid Response: The entered passwords do not match");
         highlightText(newPasswordConfirmDesc, "red");
         highlightInputField(newPasswordConfirmField);
+    } else if (checkStringNotEmpty(newPasswordConfirm)) {
+        newPasswordConfirmDesc.css("display", "none");
     }
 
     if (isPasswordValid && bothPasswordsMatch) {
