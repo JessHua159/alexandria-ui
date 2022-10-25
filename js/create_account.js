@@ -1,4 +1,4 @@
-import { highlightInputField, highlightText, resetStyle, checkStringNotEmpty } from "./vars_and_helpers.js";
+import { checkStringNotEmpty, checkEmail, checkPassword, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js";
 import { sendAccountInfo } from "./requests.js"
 
 const universityDesc = $("label#university-desc"),
@@ -77,9 +77,9 @@ const resetElements = () => {
     resetStyle(confirmPasswordField);
 
     submitMessage.text("");
-}
+};
 
-// Checks that the fields have been correctly entered
+// Checks that the fields are valid
 // Highlights and updates respective label text value of invalid fields
 const checkAccountInfoValid = () => {
     const universityName = universityNameField.val(),
@@ -156,62 +156,4 @@ const checkAccountInfoValid = () => {
 
     return { valid: isUniversityValid && isUsernameValid && isFirstNameValid && isLastNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid,
         universityName, username, firstName, lastName, email, password };
-};
-
-// Checks that the email field is valid.
-const checkEmail = email => {
-    if (email == null && email.length == 0) {
-        return false;
-    }
-
-    let atSymbolIndex = email.indexOf("@");
-    if (atSymbolIndex == -1) {
-        return false;
-    } 
-
-    let dotSymbolIndex = email.indexOf(".");
-    if (dotSymbolIndex == -1) {
-        return false;
-    }
-
-    let beforeAtSymbol = email.substring(0, atSymbolIndex);
-    if (beforeAtSymbol.length == 0) {
-        return false;
-    }
-
-    let afterAtSymbolBeforeDot = email.substring(atSymbolIndex + 1, dotSymbolIndex);
-    if (afterAtSymbolBeforeDot.length == 0) {
-        return false;
-    }
-
-    let afterDotSymbol = email.substring(dotSymbolIndex + 1);
-    if (afterDotSymbol.length == 0) {
-        return false;
-    }
-
-    return true;
-};
-
-// Checks that the password is valid.
-const checkPassword = password => {
-    const passwordLength = password.length;
-    if (password == null || passwordLength < 8) {
-        return false;
-    } 
-
-    let numUppercaseLetters = 0, numLowercaseLetters = 0, numNumbers = 0;
-    for (let i = 0; i < passwordLength; i++) {
-        const c = password[i];
-        if (!isNaN(c)) {
-            numNumbers++;
-        } else {
-            if (c === c.toUpperCase()) {
-                numUppercaseLetters++;
-            } else {
-                numLowercaseLetters++;
-            }
-        }
-    }
-
-    return (numUppercaseLetters > 0 && numLowercaseLetters > 0 && numNumbers > 0);
 };

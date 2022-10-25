@@ -1,4 +1,4 @@
-import { checkStringNotEmpty, highlightText, highlightInputField, resetStyle } from "./vars_and_helpers.js";
+import { checkStringNotEmpty, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js";
 import { loginUser } from "./requests.js"
 
 const usernameDesc = $("label#username-desc"),
@@ -37,9 +37,9 @@ const resetElements = () => {
     resetStyle(passwordField);
 
     submitMessage.text("");
-}
+};
 
-// Checks that the fields have been correctly entered
+// Checks that the fields are valid (not if the username or password are correct)
 // Highlights and updates respective label text value of invalid fields
 const checkAccountInfoValid = () => {
     const username = usernameField.val(),
