@@ -4,7 +4,7 @@ import { loginUser } from "./requests.js"
 $(document).ready(() => {
     $(".submit-button").click(e => {
         e.preventDefault();
-        $(".submit-message").text("");
+        resetElements();
 
         const { valid, username, password } = checkAccountInfoValid();
         if (valid) {
@@ -14,6 +14,19 @@ $(document).ready(() => {
     });
 
 });
+
+// Resets elements that may be updated by this script
+const resetElements = () => {
+    $("label#username-desc").text("Enter your username");
+    highlightText("username-desc", "gray");
+    resetStyle($("input#username"));
+
+    $("label#password-desc").text("Enter your password");
+    highlightText("password-desc", "gray");
+    resetStyle($("input#password"));
+
+    $(".submit-message").text("");
+}
 
 // Checks that the fields have been correctly entered
 // Highlights and updates respective label text value of invalid fields
@@ -30,22 +43,13 @@ const checkAccountInfoValid = () => {
         $("label#username-desc").text("Invalid Response: Enter your username");
         highlightText("username-desc", "red");
         highlightInputField(usernameField);
-    } else {
-        $("label#username-desc").text("Enter your username");
-        highlightText("username-desc", "gray");
-        resetStyle(usernameField);
     }
 
     if (!isPasswordValid) {
         $("label#password-desc").text("Invalid Response: Enter your password");
         highlightText("password-desc", "red");
         highlightInputField(passwordField);
-    } else {
-        $("label#password-desc").text("Enter your password");
-        highlightText("password-desc", "gray");
-        resetStyle(passwordField);
-    }
-
+    } 
 
     return { valid: isUsernameValid && isPasswordValid, 
         username, password };
