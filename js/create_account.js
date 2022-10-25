@@ -113,7 +113,7 @@ const checkAccountInfoValid = () => {
     if (!isConfirmPasswordValid) {
         $("label#confirm-password-desc").text("Invalid Response: The entered passwords does not match");
         highlightText("confirm-password-desc", "red");
-        highlightInputField(passwordField);
+        highlightInputField(confirmPasswordField);
     }
 
     return { valid: isUniversityValid && isUsernameValid && isFirstNameValid && isLastNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid,
