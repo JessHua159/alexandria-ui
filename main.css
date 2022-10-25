@@ -107,3 +107,14 @@ li a {
     font-size: 20px;
     font-weight: 100;
 }
+
+.reset-password-link {
+    color: #125ccb;
+    margin: -1.2rem 0 2rem 0;
+    text-decoration: none;
+    display: block;
+}
+
+.reset-password-link:hover {
+    text-decoration: underline;
+}
