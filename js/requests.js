@@ -1,4 +1,4 @@
-import { highlightInputField, highlightText, localSpringBootServerUrl } from "./vars_and_helpers.js"
+import { localSpringBootServerUrl, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js"
 
 // Sends ajax request to create account
 const sendAccountInfo = ({ universityName, username, firstName, lastName, email, password }) => {
@@ -101,14 +101,25 @@ const loginUser = ({ username, password }, fromAccountCreation) => {
         let statusNo = err.status;
         if (statusNo == 401)    // Invalid login credentials
             if (!fromAccountCreation) { 
-                const usernameField = $("input#username");
-                const passwordField = $("input#password");
+                const usernameDesc = $("label#username-desc"), 
+                    usernameField = $("input#username");
+                
+                const passwordDesc = $("label#password-desc"), 
+                    passwordField = $("input#password");
 
+                resetStyle(usernameDesc);
+                usernameDesc.text("Incorrect username or password");
+                highlightText(usernameDesc, "red");
                 highlightInputField(usernameField);
+                
+                resetStyle(passwordDesc);
+                passwordDesc.text("Incorrect username or password");
+                highlightText(passwordDesc, "red");
                 highlightInputField(passwordField);
+                
                 passwordField.val("");
 
-                $("p#submit-message").text(`Incorrect username or password`);
+                // $("p#submit-message").text(`Incorrect username or password`);
             } else {
                 $("p#submit-message").text(`Unable to login after account creation`);
             }
