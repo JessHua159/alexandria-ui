@@ -101,8 +101,13 @@ const loginUser = ({ username, password }, fromAccountCreation) => {
         let statusNo = err.status;
         if (statusNo == 401)    // Invalid login credentials
             if (!fromAccountCreation) { 
-                highlightInputField($("input#username"));
-                highlightInputField($("input#password"));
+                const usernameField = $("input#username");
+                const passwordField = $("input#password");
+
+                highlightInputField(usernameField);
+                highlightInputField(passwordField);
+                passwordField.val("");
+
                 $("p#submit-message").text(`Incorrect username or password`);
             } else {
                 $("p#submit-message").text(`Unable to login after account creation`);
