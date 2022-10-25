@@ -9,7 +9,7 @@ $(document).ready(() => {
         const { valid, newPassword, newPasswordConfirm } = checkValid();
         if (valid) {
             console.log("New password valid.");
-            sendPasswordReset({ newPassword });
+            // sendPasswordReset({ newPassword });
         }
     });
 });
