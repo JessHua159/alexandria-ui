@@ -1,4 +1,4 @@
-import { highlightInputField, resetStyle, localSpringBootServerUrl } from "./vars_and_helpers.js"
+import { localSpringBootServerUrl, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js"
 
 // Sends ajax request to create account
 const sendAccountInfo = ({ universityName, username, firstName, lastName, email, password }) => {
@@ -34,7 +34,7 @@ const sendAccountInfo = ({ universityName, username, firstName, lastName, email,
         console.log("Data returned: ");
         console.log(data);
         
-        $(".submit-message").text("Account has been created.");
+        $("p#submit-message").text("Account has been created.");
         loginUser({ username, password}, true);
     }).fail(err => {
         console.log("Account has not been created.");
@@ -43,15 +43,17 @@ const sendAccountInfo = ({ universityName, username, firstName, lastName, email,
 
         let submitMessageText = `There is an error with account creation. Return code: ${err.status}. Error: ${err.statusText}.`;
         if (err.status == 400 && err.responseJSON.message.indexOf("username") != -1) {
-            $("label#username").text(`Username (${err.responseJSON.message})`);
+            const usernameDesc = $("label#username-desc");
+
+            usernameDesc.css("display", "inline");
+            usernameDesc.text(err.responseJSON.message);
+            highlightText(usernameDesc, "red");
             highlightInputField($("input#username"));
+
             submitMessageText = `There is an error with account creation.`;
-        } else {
-            $("label#username").text("Username");
-            resetStyle($("input#username"));
         }
 
-        $(".submit-message").text(submitMessageText);
+        $("p#submit-message").text(submitMessageText);
     });
 };
 
@@ -99,14 +101,30 @@ const loginUser = ({ username, password }, fromAccountCreation) => {
         let statusNo = err.status;
         if (statusNo == 401)    // Invalid login credentials
             if (!fromAccountCreation) { 
-                highlightInputField($("input#username"));
-                highlightInputField($("input#password"));
-                $(".submit-message").text(`Incorrect username or password`);
+                const usernameDesc = $("label#username-desc"), 
+                    usernameField = $("input#username");
+                
+                const passwordDesc = $("label#password-desc"), 
+                    passwordField = $("input#password");
+
+                resetStyle(usernameDesc);
+                usernameDesc.text("Incorrect username or password");
+                highlightText(usernameDesc, "red");
+                highlightInputField(usernameField);
+                
+                resetStyle(passwordDesc);
+                passwordDesc.text("Incorrect username or password");
+                highlightText(passwordDesc, "red");
+                highlightInputField(passwordField);
+                
+                passwordField.val("");
+
+                // $("p#submit-message").text(`Incorrect username or password`);
             } else {
-                $(".submit-message").text(`Unable to login after account creation`);
+                $("p#submit-message").text(`Unable to login after account creation`);
             }
         else {  // Some other error
-            $(".submit-message").text(`There is an error with login. Return code: ${err.status}. Error: ${err.statusText}.`);
+            $("p#submit-message").text(`There is an error with login. Return code: ${err.status}. Error: ${err.statusText}.`);
         }
     });
 };

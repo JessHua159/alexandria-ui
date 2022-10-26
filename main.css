@@ -8,6 +8,11 @@ header {
     color: gray;
 }
 
+.desc::after {
+    content: "\a";
+    white-space: pre;
+}
+
 h1 {
     font-family: 'Work Sans', sans-serif;
     font-size: 57px;
@@ -60,7 +65,6 @@ li a {
   text-decoration: none;
 }
 
-
 .submit-button {
   display: block;
   cursor: pointer;
@@ -90,7 +94,7 @@ li a {
     margin-left: 5%;
 }
 
-.account_info input{
+.account_info input {
     width: 500px;
     height: 40px;
     border-radius: 4px;
@@ -104,5 +108,13 @@ li a {
     font-weight: 100;
 }
 
+.reset-password-link {
+    color: #125ccb;
+    margin: -1.2rem 0 2rem 0;
+    text-decoration: none;
+    display: block;
+}
 
-
+.reset-password-link:hover {
+    text-decoration: underline;
+}

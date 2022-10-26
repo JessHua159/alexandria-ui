@@ -1,10 +1,19 @@
-import { checkStringNotEmpty, highlightText, highlightInputField, resetStyle } from "./vars_and_helpers.js";
+import { checkStringNotEmpty, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js";
 import { loginUser } from "./requests.js"
 
+const usernameDesc = $("label#username-desc"),
+    usernameField = $("input#username");
+
+const passwordDesc = $("label#password-desc"),
+    passwordField = $("input#password");
+
+const submitButton = $("input#submit-button"),
+    submitMessage = $("p#submit-message");
+
 $(document).ready(() => {
-    $(".submit-button").click(e => {
+    submitButton.click(e => {
         e.preventDefault();
-        $(".submit-message").text("");
+        resetElements();
 
         const { valid, username, password } = checkAccountInfoValid();
         if (valid) {
@@ -15,37 +24,45 @@ $(document).ready(() => {
 
 });
 
-// Checks that the fields have been correctly entered
+// Resets elements that may be updated
+const resetElements = () => {
+    resetStyle(usernameDesc);
+    usernameDesc.text("Enter your username");
+    highlightText(usernameDesc, "gray");
+    resetStyle(usernameField);
+
+    resetStyle(passwordDesc);
+    passwordDesc.text("Enter your password");
+    highlightText(passwordDesc, "gray");
+    resetStyle(passwordField);
+
+    submitMessage.text("");
+};
+
+// Checks that the fields are valid (not if the username or password are correct)
 // Highlights and updates respective label text value of invalid fields
 const checkAccountInfoValid = () => {
-    const usernameField = $("input#username"),
-            username = usernameField.val(),
-            passwordField = $("input#password"),
-            password = passwordField.val();
+    const username = usernameField.val(),
+        password = passwordField.val();
 
     const isUsernameValid = checkStringNotEmpty(username),
-            isPasswordValid = checkStringNotEmpty(password);
+        isPasswordValid = checkStringNotEmpty(password);
 
     if (!isUsernameValid) {
-        $("label#username-desc").text("Invalid Response: Enter your username");
-        highlightText("username-desc", "red");
+        usernameDesc.text("Invalid Response: Enter your username");
+        highlightText(usernameDesc, "red");
         highlightInputField(usernameField);
     } else {
-        $("label#username-desc").text("Enter your username");
-        highlightText("username-desc", "gray");
-        resetStyle(usernameField);
+        usernameDesc.css("display", "none");
     }
 
     if (!isPasswordValid) {
-        $("label#password-desc").text("Invalid Response: Enter your password");
-        highlightText("password-desc", "red");
+        passwordDesc.text("Invalid Response: Enter your password");
+        highlightText(passwordDesc, "red");
         highlightInputField(passwordField);
     } else {
-        $("label#password-desc").text("Enter your password");
-        highlightText("password-desc", "gray");
-        resetStyle(passwordField);
+        passwordDesc.css("display", "none");
     }
-
 
     return { valid: isUsernameValid && isPasswordValid, 
         username, password };
