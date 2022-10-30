@@ -1,13 +1,13 @@
 import { localSpringBootServerUrl, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js"
 
 // Sends ajax request to create account
-const sendAccountInfo = ({ universityName, username, firstName, lastName, email, password }) => {
+const sendAccountInfo = ({ universityName, firstName, lastName, email, password }) => {
     const accountInfo = {
         "university": { "name": universityName },
-        "username": username,
         "firstName": firstName,
         "lastName": lastName,
-        "primaryEmail": email,
+        "username": email,
+        // "primaryEmail": email,
         "password": password
     };
     
@@ -35,7 +35,7 @@ const sendAccountInfo = ({ universityName, username, firstName, lastName, email,
         console.log(data);
         
         $("p#submit-message").text("Account has been created.");
-        loginUser({ username, password}, true);
+        loginUser({ email, password }, true);
     }).fail(err => {
         console.log("Account has not been created.");
         console.log("Error: ")
@@ -43,12 +43,12 @@ const sendAccountInfo = ({ universityName, username, firstName, lastName, email,
 
         let submitMessageText = `There is an error with account creation. Return code: ${err.status}. Error: ${err.statusText}.`;
         if (err.status == 400 && err.responseJSON.message.indexOf("username") != -1) {
-            const usernameDesc = $("label#username-desc");
+            const emailDesc = $("label#email-desc");
 
-            usernameDesc.css("display", "inline");
-            usernameDesc.text(err.responseJSON.message);
-            highlightText(usernameDesc, "red");
-            highlightInputField($("input#username"));
+            emailDesc.css("display", "inline");
+            emailDesc.text(err.responseJSON.message);
+            highlightText(emailDesc, "red");
+            highlightInputField($("input#email"));
 
             submitMessageText = `There is an error with account creation.`;
         }
@@ -58,16 +58,16 @@ const sendAccountInfo = ({ universityName, username, firstName, lastName, email,
 };
 
 // Sends ajax request to log in user
-const loginUser = ({ username, password }, fromAccountCreation) => {
+const loginUser = ({ email, password }, fromAccountCreation) => {
     const accountInfo = {
-        "username": username,
+        "username": email,
         "password": password
     };
     
     const accountInfoJSON = JSON.stringify(accountInfo);
 
     const ajaxRequestToSendLoginInfo = $.ajax({
-        beforeSend: xhr => xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password)),
+        beforeSend: xhr => xhr.setRequestHeader("Authorization", "Basic " + btoa(email + ":" + password)),
         type: "GET",
         url: `${localSpringBootServerUrl}/api/login`,
         headers: {
@@ -87,39 +87,38 @@ const loginUser = ({ username, password }, fromAccountCreation) => {
             $("input#submit-button").val(submitButtonVal);
         }
 
-        // stores jwt token and user username to session storage
-        // user username to session storage so that it can be accessed for navbar 
+        // stores jwt token to session storage
         sessionStorage.setItem("token", data.jwt);   
-        sessionStorage.setItem("username", username);
+        sessionStorage.setItem("firstName", data.firstName);
 
         window.location = "index.html";
 
-        // $(".submit-message").text(fromAccountCreation ? `Account with username ${username} has been created. You have been logged in.` : "You have been logged in.");
+        // $(".submit-message").text(fromAccountCreation ? `Account with email ${email} has been created. You have been logged in.` : "You have been logged in.");
     }).fail(err => {
         console.log("Login failed.");
 
         let statusNo = err.status;
         if (statusNo == 401)    // Invalid login credentials
             if (!fromAccountCreation) { 
-                const usernameDesc = $("label#username-desc"), 
-                    usernameField = $("input#username");
+                const emailDesc = $("label#email-desc"), 
+                    emailField = $("input#email");
                 
                 const passwordDesc = $("label#password-desc"), 
                     passwordField = $("input#password");
 
-                resetStyle(usernameDesc);
-                usernameDesc.text("Incorrect username or password");
-                highlightText(usernameDesc, "red");
-                highlightInputField(usernameField);
+                resetStyle(emailDesc);
+                emailDesc.text("Incorrect email or password");
+                highlightText(emailDesc, "red");
+                highlightInputField(emailField);
                 
                 resetStyle(passwordDesc);
-                passwordDesc.text("Incorrect username or password");
+                passwordDesc.text("Incorrect email or password");
                 highlightText(passwordDesc, "red");
                 highlightInputField(passwordField);
                 
                 passwordField.val("");
 
-                // $("p#submit-message").text(`Incorrect username or password`);
+                // $("p#submit-message").text(`Incorrect email or password`);
             } else {
                 $("p#submit-message").text(`Unable to login after account creation`);
             }

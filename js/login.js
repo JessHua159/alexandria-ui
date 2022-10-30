@@ -1,8 +1,8 @@
 import { checkStringNotEmpty, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js";
 import { loginUser } from "./requests.js"
 
-const usernameDesc = $("label#username-desc"),
-    usernameField = $("input#username");
+const emailDesc = $("label#email-desc"),
+    emailField = $("input#email");
 
 const passwordDesc = $("label#password-desc"),
     passwordField = $("input#password");
@@ -15,10 +15,10 @@ $(document).ready(() => {
         e.preventDefault();
         resetElements();
 
-        const { valid, username, password } = checkAccountInfoValid();
+        const { valid, email, password } = checkAccountInfoValid();
         if (valid) {
             console.log("Login information inputted.");
-            loginUser({ username, password}, false);
+            loginUser({ email, password}, false);
         }
     });
 
@@ -26,10 +26,10 @@ $(document).ready(() => {
 
 // Resets elements that may be updated
 const resetElements = () => {
-    resetStyle(usernameDesc);
-    usernameDesc.text("Enter your username");
-    highlightText(usernameDesc, "gray");
-    resetStyle(usernameField);
+    resetStyle(emailDesc);
+    emailDesc.text("Enter your email");
+    highlightText(emailDesc, "gray");
+    resetStyle(emailField);
 
     resetStyle(passwordDesc);
     passwordDesc.text("Enter your password");
@@ -39,21 +39,21 @@ const resetElements = () => {
     submitMessage.text("");
 };
 
-// Checks that the fields are valid (not if the username or password are correct)
+// Checks that the fields are valid (not if the email or password are correct)
 // Highlights and updates respective label text value of invalid fields
 const checkAccountInfoValid = () => {
-    const username = usernameField.val(),
+    const email = emailField.val(),
         password = passwordField.val();
 
-    const isUsernameValid = checkStringNotEmpty(username),
+    const isEmailValid = checkStringNotEmpty(email),
         isPasswordValid = checkStringNotEmpty(password);
 
-    if (!isUsernameValid) {
-        usernameDesc.text("Invalid Response: Enter your username");
-        highlightText(usernameDesc, "red");
-        highlightInputField(usernameField);
+    if (!isEmailValid) {
+        emailDesc.text("Invalid Response: Enter your email");
+        highlightText(emailDesc, "red");
+        highlightInputField(emailField);
     } else {
-        usernameDesc.css("display", "none");
+        emailDesc.css("display", "none");
     }
 
     if (!isPasswordValid) {
@@ -64,6 +64,6 @@ const checkAccountInfoValid = () => {
         passwordDesc.css("display", "none");
     }
 
-    return { valid: isUsernameValid && isPasswordValid, 
-        username, password };
+    return { valid: isEmailValid && isPasswordValid, 
+        email, password };
 };

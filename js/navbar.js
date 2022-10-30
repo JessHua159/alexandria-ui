@@ -4,7 +4,7 @@ $(document).ready(() => {
     // Checks if the user is logged in and updates navbar as appropriate
     const isLoggedIn = checkUserLoggedIn();
     if (isLoggedIn) {
-        $("#profile-username").html(`<a href="#">Hi ${sessionStorage.getItem("username")}</a>`);
+        $("#profile-username").html(`<a href="#">Hi ${sessionStorage.getItem("firstName")}</a>`);
         $("#login-or-logout").html('<a href="index.html">Logout</a>');
     } else {
         $("#login-or-logout").html('<a href="login.html">Login</a>');
@@ -12,9 +12,9 @@ $(document).ready(() => {
 
     $("#login-or-logout a").click(() => {
         if (isLoggedIn) {
-            // Logs user out by removing jwt token and username from session storage and updates navbar
+            // Logs user out by removing jwt token from session storage and updates navbar
             sessionStorage.removeItem("token");
-            sessionStorage.removeItem("username");
+            sessionStorage.removeItem("firstName");
             window.location = "index.html";
         }
     });

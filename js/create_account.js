@@ -4,8 +4,8 @@ import { sendAccountInfo } from "./requests.js"
 const universityDesc = $("label#university-desc"),
     universityNameField = $("input#university");
     
-const usernameDesc = $("label#username-desc"),
-    usernameField = $("input#username");
+// const usernameDesc = $("label#username-desc"),
+//     usernameField = $("input#username");
     
 const firstNameDesc = $("label#first-name-desc"),
     firstNameField = $("input#first-name");
@@ -30,10 +30,10 @@ $(document).ready(() => {
         e.preventDefault();
         resetElements();
 
-        const { valid, universityName, username, firstName, lastName, email, password } = checkAccountInfoValid();
+        const { valid, universityName, firstName, lastName, email, password } = checkAccountInfoValid();
         if (valid) {
             console.log("Account information valid.");
-            sendAccountInfo({ universityName, username, firstName, lastName, email, password });
+            sendAccountInfo({ universityName, firstName, lastName, email, password });
         }
     });
 
@@ -46,10 +46,10 @@ const resetElements = () => {
     highlightText(universityDesc, "gray");
     resetStyle(universityNameField);
 
-    resetStyle(usernameDesc);
-    usernameDesc.text("Enter a username");
-    highlightText(usernameDesc, "gray");
-    resetStyle(usernameField);
+    // resetStyle(usernameDesc);
+    // usernameDesc.text("Enter a username");
+    // highlightText(usernameDesc, "gray");
+    // resetStyle(usernameField);
 
     resetStyle(firstNameDesc);
     firstNameDesc.text("Enter your first name");
@@ -83,7 +83,7 @@ const resetElements = () => {
 // Highlights and updates respective label text value of invalid fields
 const checkAccountInfoValid = () => {
     const universityName = universityNameField.val(),
-        username = usernameField.val(),
+        // username = usernameField.val(),
         firstName = firstNameField.val(),
         lastName = lastNameField.val(),
         email = emailField.val(),
@@ -91,7 +91,7 @@ const checkAccountInfoValid = () => {
         confirmPassword = confirmPasswordField.val();
 
     const isUniversityValid = checkStringNotEmpty(universityName),
-        isUsernameValid = checkStringNotEmpty(username),
+        // isUsernameValid = checkStringNotEmpty(username),
         isFirstNameValid = checkStringNotEmpty(firstName),
         isLastNameValid = checkStringNotEmpty(lastName),
         isEmailValid = checkEmail(email),
@@ -106,13 +106,13 @@ const checkAccountInfoValid = () => {
         universityDesc.css("display", "none");
     }
 
-    if (!isUsernameValid) {
-        usernameDesc.text("Invalid Response: Enter a username");
-        highlightText(usernameDesc, "red");
-        highlightInputField(usernameField);
-    } else {
-        usernameDesc.css("display", "none");
-    }
+    // if (!isUsernameValid) {
+    //     usernameDesc.text("Invalid Response: Enter a username");
+    //     highlightText(usernameDesc, "red");
+    //     highlightInputField(usernameField);
+    // } else {
+    //     usernameDesc.css("display", "none");
+    // }
 
     if (!isFirstNameValid) {
         firstNameDesc.text("Invalid Response: Enter your first name");
@@ -154,6 +154,6 @@ const checkAccountInfoValid = () => {
         confirmPasswordDesc.css("display", "none");
     }
 
-    return { valid: isUniversityValid && isUsernameValid && isFirstNameValid && isLastNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid,
-        universityName, username, firstName, lastName, email, password };
+    return { valid: isUniversityValid && isFirstNameValid && isLastNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid,
+        universityName, firstName, lastName, email, password };
 };
