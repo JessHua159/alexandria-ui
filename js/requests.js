@@ -42,13 +42,23 @@ const sendAccountInfo = ({ universityName, firstName, lastName, email, password 
         console.log(err);
 
         let submitMessageText = `There is an error with account creation. Return code: ${err.status}. Error: ${err.statusText}.`;
-        if (err.status == 400 && err.responseJSON.message.indexOf("username") != -1) {
-            const emailDesc = $("label#email-desc");
+        if (err.status == 400) {
+            let errResponseJSONMessage = err.responseJSON.message;
+            if (errResponseJSONMessage.indexOf("University name") != -1) {
+                const universityDesc = $("label#university-desc");
 
-            emailDesc.css("display", "inline");
-            emailDesc.text(err.responseJSON.message);
-            highlightText(emailDesc, "red");
-            highlightInputField($("input#email"));
+                universityDesc.css("display", "inline");
+                universityDesc.text(errResponseJSONMessage);
+                highlightText(universityDesc, "red");
+                highlightInputField($("input#university"));
+            } else if (errResponseJSONMessage.indexOf("username") != -1) {
+                const emailDesc = $("label#email-desc");
+
+                emailDesc.css("display", "inline");
+                emailDesc.text(errResponseJSONMessage);
+                highlightText(emailDesc, "red");
+                highlightInputField($("input#email"));
+            }
 
             submitMessageText = `There is an error with account creation.`;
         }
