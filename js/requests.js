@@ -89,7 +89,7 @@ const loginUser = ({ email, password }, fromAccountCreation) => {
 
         // stores jwt token to session storage
         sessionStorage.setItem("token", data.jwt);   
-        // sessionStorage.setItem("username", username);
+        sessionStorage.setItem("firstName", data.firstName);
 
         window.location = "index.html";
 
