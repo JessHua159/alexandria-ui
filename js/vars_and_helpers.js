@@ -61,6 +61,18 @@ const checkPassword = password => {
     return (numUppercaseLetters > 0 && numLowercaseLetters > 0 && numNumbers > 0);
 };
 
+const checkISBN = isbn => {
+    let numNumbers = 0;
+    for (let i = 0; i < isbn.length; i++) {
+        const c = isbn[i];
+        if (!isNaN(c)) {
+            numNumbers++;
+        }   
+    }
+
+    return (numNumbers == 13);
+}
+
 const highlightInputField = inputField => {
     inputField.css("outline", "none");
     inputField.css("border-color", highlightInputFieldColor);
@@ -71,4 +83,4 @@ const highlightText = (ele, newColor) => ele.css("color", newColor);
 
 const resetStyle = element => element.attr("style", "");
 
-export { localSpringBootServerUrl, checkStringNotEmpty, checkEmail, checkPassword, highlightInputField, highlightText, resetStyle };
+export { localSpringBootServerUrl, checkStringNotEmpty, checkEmail, checkPassword, checkISBN, highlightInputField, highlightText, resetStyle };
