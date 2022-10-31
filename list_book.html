@@ -53,6 +53,7 @@
                     <label id="condition" for="condition">Condition</label><br>
                     <label class="desc" id="condition-desc">Select the book's condition</label>
                     <select id="condition">
+                        <option value="null"></option>
                         <option value="As New">As New</option>
                         <option value="Fair">Fair</option>
                         <option value="Good">Good</option>
@@ -61,14 +62,14 @@
                     </select><br>
 
                     <label id="description" for="description">Description</label><br>
-                    <label class="desc" id="description-desc">Enter in a description of the book</label>
+                    <label class="desc" id="description-desc">Enter in a description of the book</label>    <!-- minimum and maximum length info added with jquery -->
                     <textarea name="description" id="description" cols="30" rows="10" placeholder="This is a textbook in the subject of ..."></textarea><br>
                     
                     <label id="listing-option" for="listing-option">Listing option</label><br>
                     <label class="desc" id="listing-option-desc">Select whether you would like to exchange or give away the book</label>
-                    <input type="radio" id="exchange" name="listing-method" value="Exchange">
+                    <input type="radio" id="exchange" name="listing-type" value="Exchange">
                     <label class="option-label" for="exchange">Exchange</label><br>
-                    <input type="radio" id="giveaway" name="listing-method" value="Give away">
+                    <input type="radio" id="giveaway" name="listing-type" value="Give away">
                     <label class="option-label" for="giveaway">Give away</label><br>
 
                     <input type="submit" class="submit-button" id="submit-button" value="List Book">

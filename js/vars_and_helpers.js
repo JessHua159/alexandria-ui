@@ -1,5 +1,6 @@
 const localSpringBootServerUrl = "http://localhost:8080";
 const highlightInputFieldColor = "rgb(255, 0, 0)";
+const minimumBookDescriptionLength = 10, maximumBookDescriptionLength = 250;
 
 const checkStringNotEmpty = x => x != null && x.length > 0;
 
@@ -73,6 +74,14 @@ const checkISBN = isbn => {
     return (numNumbers == 13);
 }
 
+const checkBookDescriptionNotTooShort = bookDescription => {
+    return bookDescription.length >= minimumBookDescriptionLength;
+}
+
+const checkBookDescriptionNotTooLong = bookDescription => {
+    return bookDescription.length <= maximumBookDescriptionLength;
+}
+
 const highlightInputField = inputField => {
     inputField.css("outline", "none");
     inputField.css("border-color", highlightInputFieldColor);
@@ -83,4 +92,7 @@ const highlightText = (ele, newColor) => ele.css("color", newColor);
 
 const resetStyle = element => element.attr("style", "");
 
-export { localSpringBootServerUrl, checkStringNotEmpty, checkEmail, checkPassword, checkISBN, highlightInputField, highlightText, resetStyle };
+export { localSpringBootServerUrl, minimumBookDescriptionLength, maximumBookDescriptionLength,
+    checkStringNotEmpty, checkEmail, checkPassword, checkISBN, 
+    checkBookDescriptionNotTooShort, checkBookDescriptionNotTooLong, 
+    highlightInputField, highlightText, resetStyle };

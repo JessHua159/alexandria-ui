@@ -1,4 +1,6 @@
-import { checkStringNotEmpty, checkISBN, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js";
+import { minimumBookDescriptionLength, maximumBookDescriptionLength,
+    checkStringNotEmpty, checkISBN, checkBookDescriptionNotTooShort, checkBookDescriptionNotTooLong, 
+    highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js";
 // import { sendAccountInfo } from "./requests.js"
 
 const isbnDesc = $("label#isbn-desc"), originalIsbnDescText = isbnDesc.text(),
@@ -8,13 +10,13 @@ const nameDesc = $("label#name-desc"), originalNameDescText = nameDesc.text(),
     nameField = $("input#name");
 
 const conditionDesc = $("label#condition-desc"), originalConditionDescText = conditionDesc.text(),
-    conditionDropdown = $("select#condition");
+    conditionField = $("select#condition");
 
 const descriptionDesc = $("label#description-desc"), originalDesciptionDescText = descriptionDesc.text(),
     descriptionField = $("textarea#description");
 
 const listingOptionDesc = $("label#listing-option-desc"), originalListingOptionDescText = listingOptionDesc.text(),
-    listingOptionField = $("input[name=listing-method]");
+    listingOptionField = $("input[name=listing-type]");
 
 const submitButton = $("input#submit-button"),
     submitMessage = $("p#submit-message");
@@ -24,10 +26,10 @@ $(document).ready(() => {
         e.preventDefault();
         resetElements();
 
-        const { valid } = checkBookInfoValid();
+        const { valid, isbn, name, condition, description, listingOption } = checkBookInfoValid();
         if (valid) {
             console.log("Book information valid.");
-            // sendBookInfo();
+            // sendBookInfo({ isbn, name, condition, description, listingOption });
         }
     });
 
@@ -48,10 +50,10 @@ const resetElements = () => {
     resetStyle(conditionDesc);
     conditionDesc.text(originalConditionDescText);
     highlightText(conditionDesc, "gray");
-    resetStyle(conditionDropdown);
+    resetStyle(conditionField);
 
     resetStyle(descriptionDesc);
-    descriptionDesc.text(originalDesciptionDescText);
+    descriptionDesc.text(`${originalDesciptionDescText} (between ${minimumBookDescriptionLength} and ${maximumBookDescriptionLength} characters long)`);
     highlightText(descriptionDesc, "gray");
     resetStyle(descriptionField);
 
@@ -66,19 +68,19 @@ const resetElements = () => {
 // Checks that the fields are valid
 // Highlights and updates respective label text value of invalid fields
 const checkBookInfoValid = () => {
-    const isbn = isbnField.val();
-        // firstName = firstNameField.val(),
-        // lastName = lastNameField.val(),
-        // email = emailField.val(),
-        // password = passwordField.val(),
-        // confirmPassword = confirmPasswordField.val();
+    const isbn = isbnField.val(),
+        name = nameField.val(),
+        condition = $("select#condition option:selected").text(),
+        description = descriptionField.val(),
+        listingOption = $("input[name=listing-type]:checked").val();
 
-    const isISBNValid = checkISBN(isbn);
-        // isFirstNameValid = checkStringNotEmpty(firstName),
-        // isLastNameValid = checkStringNotEmpty(lastName),
-        // isEmailValid = checkEmail(email),
-        // isPasswordValid = checkPassword(password),
-        // isConfirmPasswordValid = (password === confirmPassword);
+    const isISBNValid = checkISBN(isbn),
+        isNameValid = checkStringNotEmpty(name),
+        isConditionValid = checkStringNotEmpty(condition),
+        descriptionNotTooShort = checkBookDescriptionNotTooShort(description),
+        descriptionNotTooLong = checkBookDescriptionNotTooLong(description),
+        isDescriptionValid = descriptionNotTooShort && descriptionNotTooLong,
+        isListingOptionValid = listingOption !== undefined;
 
     if (!isISBNValid) {
         isbnDesc.text(`Invalid ISBN Format: ${originalIsbnDescText}`);
@@ -88,47 +90,43 @@ const checkBookInfoValid = () => {
         isbnDesc.css("display", "none");
     }
 
-    // here
+    if (!isNameValid) {
+        nameDesc.text(`Invalid Response: ${originalNameDescText}`);
+        highlightText(nameDesc, "red");
+        highlightInputField(nameField);
+    } else {
+        nameDesc.css("display", "none");
+    }
 
-    // if (!isFirstNameValid) {
-    //     firstNameDesc.text("Invalid Response: Enter your first name");
-    //     highlightText(firstNameDesc, "red");
-    //     highlightInputField(firstNameField);
-    // } else {
-    //     firstNameDesc.css("display", "none");
-    // }
+    if (!isConditionValid) {
+        conditionDesc.text(`Invalid Response: ${originalConditionDescText}`);
+        highlightText(conditionDesc, "red");
+        highlightInputField(conditionField);
+    } else {
+        conditionDesc.css("display", "none");
+    }
 
-    // if (!isLastNameValid) {
-    //     lastNameDesc.text("Invalid Response: Enter your last name");
-    //     highlightText(lastNameDesc, "red");
-    //     highlightInputField(lastNameField);
-    // } else {
-    //     lastNameDesc.css("display", "none");
-    // }
+    if (!isDescriptionValid) {
+        highlightText(descriptionDesc, "red");
+        highlightInputField(descriptionField);
 
-    // if (!isEmailValid) {
-    //     emailDesc.text("Invalid Response: Email must be in form of <something>@<domain>.<ext> (e.g, username@college.edu)");
-    //     highlightText(emailDesc, "red");
-    //     highlightInputField(emailField);
-    // } else {
-    //     emailDesc.css("display", "none");
-    // }
+        if (!descriptionNotTooShort) {
+            descriptionDesc.text(`Invalid Response: Book description too short (less than ${minimumBookDescriptionLength} characters, should be between ${minimumBookDescriptionLength} and ${maximumBookDescriptionLength} characters long)`);
+        } else if (!descriptionNotTooLong) {
+            descriptionDesc.text(`Invalid Response: Book description too long (more than ${maximumBookDescriptionLength} characters, should be between ${minimumBookDescriptionLength} and ${maximumBookDescriptionLength} characters long)`);
+        }
+    } else {
+        descriptionDesc.css("display", "none");
+    }
 
-    // if (!isPasswordValid) {
-    //     passwordDesc.text("Invalid Response: Password must have at least 8 characters long, at least 1 uppercase and 1 lowercase letter, at least 1 number");
-    //     highlightText(passwordDesc, "red");
-    //     highlightInputField(passwordField);
-    // } else {
-    //     passwordDesc.css("display", "none");
-    // }
+    if (!isListingOptionValid) {
+        listingOptionDesc.text(`Invalid Response: ${originalListingOptionDescText}`);
+        highlightText(listingOptionDesc, "red");
+        highlightInputField(listingOptionField);
+    } else {
+        listingOptionDesc.css("display", "none");
+    }
 
-    // if (!isConfirmPasswordValid) {
-    //     confirmPasswordDesc.text("Invalid Response: The entered passwords does not match");
-    //     highlightText(confirmPasswordDesc, "red");
-    //     highlightInputField(confirmPasswordField);
-    // } else if (checkStringNotEmpty(confirmPassword)) {
-    //     confirmPasswordDesc.css("display", "none");
-    // }
-
-    return { valid: isISBNValid };
+    return { valid: isISBNValid && isNameValid && isConditionValid && isDescriptionValid && isListingOptionValid,
+            isbn, name, condition, description, listingOption };
 };
