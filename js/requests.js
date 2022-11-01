@@ -1,4 +1,4 @@
-import { localSpringBootServerUrl, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js"
+import { localSpringBootServerUrl, indexPageFilename, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js"
 
 // Sends ajax request to create account
 const sendAccountInfo = ({ universityName, firstName, lastName, email, password }) => {
@@ -12,7 +12,6 @@ const sendAccountInfo = ({ universityName, firstName, lastName, email, password 
     };
     
     const accountInfoJSON = JSON.stringify(accountInfo);
-    console.log(accountInfoJSON);
     
     const ajaxRequestToSendAccountInfo = $.ajax({
         method: "POST",
@@ -101,7 +100,7 @@ const loginUser = ({ email, password }, fromAccountCreation) => {
         sessionStorage.setItem("token", data.jwt);   
         sessionStorage.setItem("firstName", data.firstName);
 
-        window.location = "index.html";
+        window.location = indexPageFilename;
 
         // $(".submit-message").text(fromAccountCreation ? `Account with email ${email} has been created. You have been logged in.` : "You have been logged in.");
     }).fail(err => {
@@ -138,6 +137,7 @@ const loginUser = ({ email, password }, fromAccountCreation) => {
     });
 };
 
+// Checks that user is logged in via the token session storage
 const checkUserLoggedIn = () => {
     let tokenVal = sessionStorage.getItem("token");
     if (tokenVal == null) {
@@ -147,4 +147,42 @@ const checkUserLoggedIn = () => {
     return true;
 };
 
-export { sendAccountInfo, loginUser, checkUserLoggedIn };
+// Sends ajax request to add book info
+const sendBookInfo = ({ isbn, name, condition, description, listingOption }) => {
+    const bookInfo = {
+        "isbn": isbn,
+        "name": name,
+        "condition": condition,
+        "description": description,
+        "forExchange": false,
+        "forGiveaway": false
+    };
+
+    if (listingOption == "Exchange") {
+        bookInfo.forExchange = true;
+    } else if (listingOption == "Give away") {
+        bookInfo.forGiveaway = true;
+    }
+
+    console.log(bookInfo);
+
+    const ajaxRequestToSendBookInfo = $.ajax({
+        method: "POST",
+        url: `${localSpringBootServerUrl}/api/book`,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: bookInfo,
+        crossDomain: true
+    });
+
+    ajaxRequestToSendBookInfo.done(data => {
+        console.log("Data received: " + data);
+        $("p#submit-message").text("Book info successfully added");
+        window.location = indexPageFilename;
+    }).fail(err => {
+        $("p#submit-message").text(`There is an error with add book info. Return code: ${err.status}. Error: ${err.statusText}`);
+    })
+}
+
+export { sendAccountInfo, loginUser, checkUserLoggedIn, sendBookInfo };

@@ -1,7 +1,7 @@
 import { minimumBookDescriptionLength, maximumBookDescriptionLength,
     checkStringNotEmpty, checkISBN, checkBookDescriptionNotTooShort, checkBookDescriptionNotTooLong, 
     highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js";
-// import { sendAccountInfo } from "./requests.js"
+import { sendBookInfo } from "./requests.js"
 
 const isbnDesc = $("label#isbn-desc"), originalIsbnDescText = isbnDesc.text(),
     isbnField = $("input#isbn");
@@ -29,7 +29,7 @@ $(document).ready(() => {
         const { valid, isbn, name, condition, description, listingOption } = checkBookInfoValid();
         if (valid) {
             console.log("Book information valid.");
-            // sendBookInfo({ isbn, name, condition, description, listingOption });
+            sendBookInfo({ isbn, name, condition, description, listingOption });
         }
     });
 
