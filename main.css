@@ -127,3 +127,8 @@ li a {
 .reset-password-link:hover {
     text-decoration: underline;
 }
+
+#submit-email-message {
+    color: green;
+}
+

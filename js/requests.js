@@ -1,5 +1,33 @@
 import { localSpringBootServerUrl, indexPageFilename, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js"
 
+const sendTokenRequest = ({ email }) => {
+    const emailObj = {
+        "email": email
+    };
+    const emailJSON = JSON.stringify(emailObj);
+    console.log(emailJSON);
+
+    const ajaxPasswordResetTokenRequest = $.ajax({
+        method: "POST",
+        url: `${localSpringBootServerUrl}/api/resetToken`,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: emailJSON,
+        crossDomain: true
+    });
+
+    ajaxPasswordResetTokenRequest.done(data => {
+        console.log("Reset token has been generated and sent to user email");
+        console.log("Data returned: ");
+        console.log(data);
+    }).fail(err => {
+        console.log("Reset token has NOT been sent to email.");
+        console.log("Error: ")
+        console.log(err);
+    });
+};
+
 // Sends ajax request to create account
 const sendAccountInfo = ({ universityName, firstName, lastName, email, password }) => {
     const accountInfo = {
@@ -10,9 +38,9 @@ const sendAccountInfo = ({ universityName, firstName, lastName, email, password 
         // "primaryEmail": email,
         "password": password
     };
-    
+
     const accountInfoJSON = JSON.stringify(accountInfo);
-    
+
     const ajaxRequestToSendAccountInfo = $.ajax({
         method: "POST",
         url: `${localSpringBootServerUrl}/api/signup`,
@@ -28,12 +56,12 @@ const sendAccountInfo = ({ universityName, firstName, lastName, email, password 
     // .done() for success:
     // .fail() for error:
     // .always() for complete:
-    
+
     ajaxRequestToSendAccountInfo.done(data => {
         console.log("Account has been created.");
         console.log("Data returned: ");
         console.log(data);
-        
+
         $("p#submit-message").text("Account has been created.");
         loginUser({ email, password }, true);
     }).fail(err => {
@@ -66,6 +94,38 @@ const sendAccountInfo = ({ universityName, firstName, lastName, email, password 
         $("p#submit-message").text(submitMessageText);
     });
 };
+
+const sendTokenAndChangePassword = ({ email, resetToken, newPassword }) => {
+    const changePasswordObj = {
+        "email": email,
+        "resetToken": resetToken,
+        "newPassword": newPassword
+    };
+
+    const changePasswordJSON = JSON.stringify(changePasswordObj);
+    console.log(emailJSON);
+
+    const ajaxPasswordResetTokenRequest = $.ajax({
+        method: "POST",
+        url: `${localSpringBootServerUrl}/api/changePassword`,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: changePasswordJSON,
+        crossDomain: true
+    });
+
+    ajaxPasswordResetTokenRequest.done(data => {
+        console.log("User password has been updated");
+        console.log("Data returned: ");
+        console.log(data);
+    }).fail(err => {
+        console.log("User password has NOT been updated");
+        console.log("Error: ")
+        console.log(err);
+    });
+};
+
 
 // Sends ajax request to log in user
 const loginUser = ({ email, password }, fromAccountCreation) => {
@@ -189,4 +249,4 @@ const sendBookInfo = ({ isbn, name, condition, description, listingOption }) => 
     })
 }
 
-export { sendAccountInfo, loginUser, checkUserLoggedIn, sendBookInfo };
+export { sendAccountInfo, loginUser, checkUserLoggedIn, sendTokenRequest, sendTokenAndChangePassword, sendBookInfo };
