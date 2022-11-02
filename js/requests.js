@@ -17,7 +17,8 @@ const sendAccountInfo = ({ universityName, firstName, lastName, email, password 
         method: "POST",
         url: `${localSpringBootServerUrl}/api/signup`,
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem("token")
         },
         data: accountInfoJSON,
         // dataType: "json",
@@ -68,12 +69,12 @@ const sendAccountInfo = ({ universityName, firstName, lastName, email, password 
 
 // Sends ajax request to log in user
 const loginUser = ({ email, password }, fromAccountCreation) => {
-    const accountInfo = {
-        "username": email,
-        "password": password
-    };
+    // const accountInfo = {
+    //     "username": email,
+    //     "password": password
+    // };
     
-    const accountInfoJSON = JSON.stringify(accountInfo);
+    // const accountInfoJSON = JSON.stringify(accountInfo);
 
     const ajaxRequestToSendLoginInfo = $.ajax({
         beforeSend: xhr => xhr.setRequestHeader("Authorization", "Basic " + btoa(email + ":" + password)),
@@ -81,9 +82,10 @@ const loginUser = ({ email, password }, fromAccountCreation) => {
         url: `${localSpringBootServerUrl}/api/login`,
         headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem("token")
         },
-        data: accountInfoJSON,
-        dataType: "json",
+        // data: accountInfoJSON,
+        // dataType: "json",
         crossDomain: true
     });
 
@@ -155,7 +157,7 @@ const sendBookInfo = ({ isbn, name, condition, description, listingOption }) => 
         "condition": condition,
         "description": description,
         "forExchange": false,
-        "forGiveaway": false
+        "forGiveAway": false
     };
 
     if (listingOption == "Exchange") {
@@ -164,15 +166,17 @@ const sendBookInfo = ({ isbn, name, condition, description, listingOption }) => 
         bookInfo.forGiveaway = true;
     }
 
-    console.log(bookInfo);
+    const bookInfoJSON = JSON.stringify(bookInfo);
 
+    console.log(sessionStorage.getItem("token"));
     const ajaxRequestToSendBookInfo = $.ajax({
         method: "POST",
         url: `${localSpringBootServerUrl}/api/book`,
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem("token")
         },
-        data: bookInfo,
+        data: bookInfoJSON,
         crossDomain: true
     });
 

@@ -1,7 +1,7 @@
 const localSpringBootServerUrl = "http://localhost:8080";
 const highlightInputFieldColor = "rgb(255, 0, 0)";
 const minimumBookDescriptionLength = 10, maximumBookDescriptionLength = 250;
-const indexPageFilename = "index.html";
+const indexPageFilename = "index.html", loginPageFilename = "login.html", listBookPageFilename = "list_book.js";
 
 const checkStringNotEmpty = x => x != null && x.length > 0;
 
@@ -93,7 +93,8 @@ const highlightText = (ele, newColor) => ele.css("color", newColor);
 
 const resetStyle = element => element.attr("style", "");
 
-export { localSpringBootServerUrl, minimumBookDescriptionLength, maximumBookDescriptionLength, indexPageFilename,
+export { localSpringBootServerUrl, minimumBookDescriptionLength, maximumBookDescriptionLength, 
+    indexPageFilename, loginPageFilename, listBookPageFilename,
     checkStringNotEmpty, checkEmail, checkPassword, checkISBN, 
     checkBookDescriptionNotTooShort, checkBookDescriptionNotTooLong, 
     highlightInputField, highlightText, resetStyle };
