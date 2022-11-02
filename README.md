@@ -12,3 +12,4 @@ Front-end can be viewed on XAMPP. To create a local deployment of it, follow the
 4. Start Apache.
 
 5. To view the pages, enter in `http://localhost/<local repository folder>/<page name>` into your browser. For example, if the local repository folder is `alexandria` and the page name is `index.html`, then to view that page, go to `http://localhost/alexandria/index.html`.
+- XAMPP default port url is `http://localhost/`.
