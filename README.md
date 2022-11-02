@@ -9,7 +9,15 @@ Front-end can be viewed on XAMPP. To create a local deployment of it, follow the
 
 3. Clone this repository into `<path of XAMPP>/htdocs` folder.
 
-4. Start Apache.
+4. Add
+```
+ui:
+  port: 3000
+```
+to the bottom of `application-local.yml` file from the back-end.
 
-5. To view the pages, enter in `http://localhost/<local repository folder>/<page name>` into your browser. For example, if the local repository folder is `alexandria` and the page name is `index.html`, then to view that page, go to `http://localhost/alexandria/index.html`.
-- XAMPP default port url is `http://localhost/`.
+5. Open a shell from the XAMPP Control Panel. 
+
+6. From that shell, navigate to `<path of XAMPP>/htdocs/<repository name>` and enter in `php -S localhost:3000`.
+
+7. To view the pages, enter in `http://localhost:3000` into your browser.
