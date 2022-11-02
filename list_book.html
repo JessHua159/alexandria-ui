@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="main.css">
+        <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+        <script type="module" src="js/navbar.js"></script>
+        <script type="module" src="js/list_book.js"></script>
+
+        <title>Alexandria - Create Account</title>
+    </head>
+    <body>
+        <!-- navbar for website navigation -->
+        <div class="navbar">
+            <div class="container">
+                <ul class="left-nav">
+                    <li><a class="logo" href="index.html">Alexandria</a></li>
+                    <li><a href="#">Collection</a></li>
+                    <li><a href="#">Exchanges</a></li>
+                    <li><a href="#">Donations</a></li>
+                    <li><a href="#">Notifications</a></li>
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="create_account.html">Create Account</a></li>
+                    <li id="login-or-logout"></li>
+                </ul>
+
+                <ul class="right-nav">
+                    <li class="profile-username" id="profile-username"></li>    <!-- class one for selection by css, id one for selection by jQuery -->
+                    <li class="token-display"><span>(token icon)</span> Tokens: 0</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- header -->
+        <header>
+            <h1>List Book</h1>
+        </header>
+
+        <!-- book information section -->
+        <section class="book_info">
+            <div class="container">
+                <form action="#">
+                    <label id="isbn" for="isbn">ISBN</label><br>
+                    <label class="desc" id="isbn-desc">Enter the book's isbn (13 digits that may be separated by hyphens)</label>
+                    <input type="text" id="isbn" value=""><br>
+                    
+                    <label id="name" for="name">Name</label><br>
+                    <label class="desc" id="name-desc">Enter the book's name</label>
+                    <input type="text" id="name" value=""><br>
+                    
+                    <label id="condition" for="condition">Condition</label><br>
+                    <label class="desc" id="condition-desc">Select the book's condition</label>
+                    <select id="condition">
+                        <option value="null"></option>
+                        <option value="As New">As New</option>
+                        <option value="Fair">Fair</option>
+                        <option value="Good">Good</option>
+                        <option value="Nearly Damaged">Nearly Damaged</option>
+                        <option value="Damaged">Damaged</option>
+                    </select><br>
+
+                    <label id="description" for="description">Description</label><br>
+                    <label class="desc" id="description-desc">Enter in a description of the book</label>    <!-- minimum and maximum length info added with jquery -->
+                    <textarea name="description" id="description" cols="30" rows="10" placeholder="This is a textbook in the subject of ..."></textarea><br>
+                    
+                    <label id="listing-option" for="listing-option">Listing option</label><br>
+                    <label class="desc" id="listing-option-desc">Select whether you would like to exchange or give away the book</label>
+                    <input type="radio" id="exchange" name="listing-type" value="Exchange">
+                    <label class="option-label" for="exchange">Exchange</label><br>
+                    <input type="radio" id="giveaway" name="listing-type" value="Give away">
+                    <label class="option-label" for="giveaway">Give away</label><br>
+
+                    <input type="submit" class="submit-button" id="submit-button" value="List Book">
+                    <p id="submit-message"></p>
+                </form>
+            </div>
+        </section>
+    </body>
+</html>

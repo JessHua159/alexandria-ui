@@ -1,4 +1,4 @@
-import { localSpringBootServerUrl, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js"
+import { localSpringBootServerUrl, indexPageFilename, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js"
 
 const sendTokenRequest = ({ email }) => {
     const emailObj = {
@@ -40,13 +40,13 @@ const sendAccountInfo = ({ universityName, firstName, lastName, email, password 
     };
 
     const accountInfoJSON = JSON.stringify(accountInfo);
-    console.log(accountInfoJSON);
 
     const ajaxRequestToSendAccountInfo = $.ajax({
         method: "POST",
         url: `${localSpringBootServerUrl}/api/signup`,
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem("token")
         },
         data: accountInfoJSON,
         // dataType: "json",
@@ -70,13 +70,23 @@ const sendAccountInfo = ({ universityName, firstName, lastName, email, password 
         console.log(err);
 
         let submitMessageText = `There is an error with account creation. Return code: ${err.status}. Error: ${err.statusText}.`;
-        if (err.status == 400 && err.responseJSON.message.indexOf("username") != -1) {
-            const emailDesc = $("label#email-desc");
+        if (err.status == 400) {
+            let errResponseJSONMessage = err.responseJSON.message;
+            if (errResponseJSONMessage.indexOf("University name") != -1) {
+                const universityDesc = $("label#university-desc");
 
-            emailDesc.css("display", "inline");
-            emailDesc.text(err.responseJSON.message);
-            highlightText(emailDesc, "red");
-            highlightInputField($("input#email"));
+                universityDesc.css("display", "inline");
+                universityDesc.text(errResponseJSONMessage);
+                highlightText(universityDesc, "red");
+                highlightInputField($("input#university"));
+            } else if (errResponseJSONMessage.indexOf("username") != -1) {
+                const emailDesc = $("label#email-desc");
+
+                emailDesc.css("display", "inline");
+                emailDesc.text(errResponseJSONMessage);
+                highlightText(emailDesc, "red");
+                highlightInputField($("input#email"));
+            }
 
             submitMessageText = `There is an error with account creation.`;
         }
@@ -119,12 +129,12 @@ const sendTokenAndChangePassword = ({ email, resetToken, newPassword }) => {
 
 // Sends ajax request to log in user
 const loginUser = ({ email, password }, fromAccountCreation) => {
-    const accountInfo = {
-        "username": email,
-        "password": password
-    };
+    // const accountInfo = {
+    //     "username": email,
+    //     "password": password
+    // };
     
-    const accountInfoJSON = JSON.stringify(accountInfo);
+    // const accountInfoJSON = JSON.stringify(accountInfo);
 
     const ajaxRequestToSendLoginInfo = $.ajax({
         beforeSend: xhr => xhr.setRequestHeader("Authorization", "Basic " + btoa(email + ":" + password)),
@@ -132,9 +142,10 @@ const loginUser = ({ email, password }, fromAccountCreation) => {
         url: `${localSpringBootServerUrl}/api/login`,
         headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem("token")
         },
-        data: accountInfoJSON,
-        dataType: "json",
+        // data: accountInfoJSON,
+        // dataType: "json",
         crossDomain: true
     });
 
@@ -151,7 +162,7 @@ const loginUser = ({ email, password }, fromAccountCreation) => {
         sessionStorage.setItem("token", data.jwt);   
         sessionStorage.setItem("firstName", data.firstName);
 
-        window.location = "index.html";
+        window.location = indexPageFilename;
 
         // $(".submit-message").text(fromAccountCreation ? `Account with email ${email} has been created. You have been logged in.` : "You have been logged in.");
     }).fail(err => {
@@ -188,6 +199,7 @@ const loginUser = ({ email, password }, fromAccountCreation) => {
     });
 };
 
+// Checks that user is logged in via the token session storage
 const checkUserLoggedIn = () => {
     let tokenVal = sessionStorage.getItem("token");
     if (tokenVal == null) {
@@ -197,4 +209,44 @@ const checkUserLoggedIn = () => {
     return true;
 };
 
-export { sendAccountInfo, loginUser, checkUserLoggedIn, sendTokenRequest, sendTokenAndChangePassword };
+// Sends ajax request to add book info
+const sendBookInfo = ({ isbn, name, condition, description, listingOption }) => {
+    const bookInfo = {
+        "isbn": isbn,
+        "name": name,
+        "condition": condition,
+        "description": description,
+        "forExchange": false,
+        "forGiveAway": false
+    };
+
+    if (listingOption == "Exchange") {
+        bookInfo.forExchange = true;
+    } else if (listingOption == "Give away") {
+        bookInfo.forGiveaway = true;
+    }
+
+    const bookInfoJSON = JSON.stringify(bookInfo);
+
+    console.log(sessionStorage.getItem("token"));
+    const ajaxRequestToSendBookInfo = $.ajax({
+        method: "POST",
+        url: `${localSpringBootServerUrl}/api/book`,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem("token")
+        },
+        data: bookInfoJSON,
+        crossDomain: true
+    });
+
+    ajaxRequestToSendBookInfo.done(data => {
+        console.log("Data received: " + data);
+        $("p#submit-message").text("Book info successfully added");
+        window.location = indexPageFilename;
+    }).fail(err => {
+        $("p#submit-message").text(`There is an error with add book info. Return code: ${err.status}. Error: ${err.statusText}`);
+    })
+}
+
+export { sendAccountInfo, loginUser, checkUserLoggedIn, sendTokenRequest, sendTokenAndChangePassword, sendBookInfo };
