@@ -47,7 +47,6 @@ const sendAccountInfo = ({ universityName, firstName, lastName, email, password 
         url: `${localSpringBootServerUrl}/api/signup`,
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem("token")
         },
         data: accountInfoJSON,
         // dataType: "json",
