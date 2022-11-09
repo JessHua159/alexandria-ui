@@ -1,5 +1,5 @@
 import { checkUserLoggedIn } from "./requests.js";
-import { loginPageFilename } from "./vars_and_helpers.js";
+import { loginPageFilename, listBookPageFilename, personalListingsPageFilename } from "./vars_and_helpers.js";
 
 const listBookButton = $("button#list-book");
 const personalListingsButton = $("button#personal-listings");
@@ -11,6 +11,7 @@ $(document).ready(() => {
         if (!checkUserLoggedIn()) {
             e.preventDefault();
             window.location = loginPageFilename;
+            sessionStorage.setItem("pageAfterLogin", listBookPageFilename);
         }
     });
     personalListingsButton.click(e => {
@@ -18,6 +19,7 @@ $(document).ready(() => {
         if (!checkUserLoggedIn()) {
             e.preventDefault();
             window.location = loginPageFilename;
+            sessionStorage.setItem("pageAfterLogin", personalListingsPageFilename);
         }
     });
 });

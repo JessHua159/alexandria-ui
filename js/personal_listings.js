@@ -6,8 +6,6 @@ import { getPersonalCollection } from "./requests.js"
 const submitButton = $("input#submit-button"),
     submitMessage = $("p#submit-message");
 
-$('a').css('color', 'white');
-
 $(document).ready(() => {
     getPersonalCollection();
 

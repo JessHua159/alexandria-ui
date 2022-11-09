@@ -163,7 +163,9 @@ const loginUser = ({ email, password }, fromAccountCreation) => {
         sessionStorage.setItem("token", data.jwt);   
         sessionStorage.setItem("firstName", data.firstName);
 
-        window.location = indexPageFilename;
+        // user gets taken to relevant page after login
+        let pageAfterLogin = sessionStorage.getItem("pageAfterLogin");
+        window.location = pageAfterLogin != null ? pageAfterLogin : indexPageFilename;
 
         // $(".submit-message").text(fromAccountCreation ? `Account with email ${email} has been created. You have been logged in.` : "You have been logged in.");
     }).fail(err => {
@@ -215,6 +217,7 @@ const getPersonalCollection = () => {
     ajaxRequestPersonalCollection.done(data => {
         console.log("Successfully retrieved collection:");
         var bookData = data.data;
+        console.log(data);
         console.log(bookData);
         sessionStorage.setItem( "bookList", JSON.stringify(bookData) );
         displayPersonalBooks();

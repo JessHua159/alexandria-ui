@@ -82,6 +82,12 @@ li a {
   box-shadow:  0px 5px 10px 0px rgba(0, 0, 0, 0.4);
 }
 
+.submit-button a {
+    display: block;
+    text-decoration: none;
+    color: #ededed;
+}
+
 .account_info, .book_info {
     display: block;
     font-family: 'Work Sans', sans-serif;
@@ -115,6 +121,10 @@ li a {
 .book_info input[type="radio"] {
     width: 20px;
     height: 15px;
+}
+
+.index-page-buttons a {
+    color: #125ccb;
 }
 
 .reset-password-link {
