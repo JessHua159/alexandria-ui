@@ -1,4 +1,5 @@
 import { localSpringBootServerUrl, indexPageFilename, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js"
+import { displayPersonalBooks } from "./personal_listings.js"
 
 const sendTokenRequest = ({ email }) => {
     const emailObj = {
@@ -199,6 +200,32 @@ const loginUser = ({ email, password }, fromAccountCreation) => {
     });
 };
 
+//get personal book collection
+const getPersonalCollection = () => {
+    const ajaxRequestPersonalCollection = $.ajax({
+        type: "GET",
+        url: `${localSpringBootServerUrl}/api/book/collection`,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem("token")
+        },
+        crossDomain: true
+    });
+
+    ajaxRequestPersonalCollection.done(data => {
+        console.log("Successfully retrieved collection:");
+        var bookData = data.data;
+        console.log(bookData);
+        sessionStorage.setItem( "bookList", JSON.stringify(bookData) );
+        displayPersonalBooks();
+    }).fail(err => {
+        console.log("Failed to retrieve personal collection.");
+        let statusNo = err.status;
+    });
+};
+
+
+
 // Checks that user is logged in via the token session storage
 const checkUserLoggedIn = () => {
     let tokenVal = sessionStorage.getItem("token");
@@ -208,6 +235,7 @@ const checkUserLoggedIn = () => {
 
     return true;
 };
+
 
 // Sends ajax request to add book info
 const sendBookInfo = ({ isbn, name, condition, description, listingOption }) => {
@@ -249,4 +277,4 @@ const sendBookInfo = ({ isbn, name, condition, description, listingOption }) => 
     })
 }
 
-export { sendAccountInfo, loginUser, checkUserLoggedIn, sendTokenRequest, sendTokenAndChangePassword, sendBookInfo };
+export { sendAccountInfo, loginUser, checkUserLoggedIn, sendTokenRequest, sendTokenAndChangePassword, sendBookInfo, getPersonalCollection };

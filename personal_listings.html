@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+    <script type="module" src="js/navbar.js"></script>
+    <script type="module" src="js/personal_listings.js"></script>
+
+    <title>Alexandria - Personal Listings</title>
+</head>
+<body>
+<!-- navbar for website navigation -->
+<div class="navbar">
+    <div class="container">
+        <ul class="left-nav">
+            <li><a class="logo" href="index.html">Alexandria</a></li>
+            <li><a href="#">Collection</a></li>
+            <li><a href="#">Exchanges</a></li>
+            <li><a href="#">Donations</a></li>
+            <li><a href="#">Notifications</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="create_account.html">Create Account</a></li>
+            <li id="login-or-logout"></li>
+        </ul>
+
+        <ul class="right-nav">
+            <li class="profile-username" id="profile-username"></li>    <!-- class one for selection by css, id one for selection by jQuery -->
+            <li class="token-display"><span>(token icon)</span> Tokens: 0</li>
+        </ul>
+    </div>
+</div>
+
+<!-- header -->
+<header>
+    <h1>Personal Listings</h1>
+</header>
+
+<!-- book information section -->
+<section class="book-info">
+    <div class="container">
+        <form action="#">
+            <div class="book-collection">
+                <table class="collection-list">
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</section>
+<button type="submit" class="submit-button" id="submit-button" value="List Book"><a href="list_book.html" style="text-decoration: none">List Book</a></button>
+
+</body>
+</html>
