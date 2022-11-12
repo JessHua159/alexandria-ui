@@ -3,6 +3,9 @@ const highlightInputFieldColor = "rgb(255, 0, 0)";
 const minimumBookDescriptionLength = 10, maximumBookDescriptionLength = 250;
 const indexPageFilename = "index.html", loginPageFilename = "login.html", listBookPageFilename = "list_book.html", personalListingsPageFilename = "personal_listings.html";
 
+const otherLeftNavbarItems = '<li><a href="list_book.html">List Book</a></li> \
+<li><a href="personal_listings.html">My Listings</a></li>';
+
 const checkStringNotEmpty = x => x != null && x.length > 0;
 
 // Checks that the email field is valid.
@@ -93,10 +96,9 @@ const highlightText = (ele, newColor) => ele.css("color", newColor);
 
 const resetStyle = element => element.attr("style", "");
 
-
-
 export { localSpringBootServerUrl, minimumBookDescriptionLength, maximumBookDescriptionLength, 
     indexPageFilename, loginPageFilename, listBookPageFilename, personalListingsPageFilename,
+    otherLeftNavbarItems,
     checkStringNotEmpty, checkEmail, checkPassword, checkISBN, 
     checkBookDescriptionNotTooShort, checkBookDescriptionNotTooLong, 
     highlightInputField, highlightText, resetStyle };
