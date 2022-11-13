@@ -17,18 +17,14 @@
             <div class="container">
                 <ul class="left-nav">
                     <li><a class="logo" href="index.html">Alexandria</a></li>
-                    <li><a href="#">Collection</a></li>
-                    <li><a href="#">Exchanges</a></li>
-                    <li><a href="#">Donations</a></li>
-                    <li><a href="#">Notifications</a></li>
-                    <li><a href="#">Profile</a></li>
-                    <li class="current"><a href="create_account.html">Create Account</a></li>
-                    <li id="login-or-logout"></li>
+                    <span id="other-left-navbar-items-toggle"></span>
+                    <li><a href="create_account.html">Create Account</a></li>
+                    <li id="login-or-logout-toggle"></li>
                 </ul>
 
                 <ul class="right-nav">
-                    <li class="profile-username" id="profile-username"></li>    <!-- class one for selection by css, id one for selection by jQuery -->
-                    <li class="token-display"><span>(token icon)</span> Tokens: 0</li>
+                    <li id="profile-username-toggle"></li>
+                    <li class="token-display" id="token-display-toggle"></li>
                 </ul>
             </div>
         </div>
