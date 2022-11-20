@@ -9,7 +9,7 @@ const sendTokenRequest = ({ email }) => {
 
     const ajaxPasswordResetTokenRequest = $.ajax({
         method: "POST",
-        url: `${localSpringBootServerUrl}/api/resetToken`,
+        url: `${localSpringBootServerUrl}/api/passwordReset`,
         headers: {
             "Content-Type": "application/json"
         },
@@ -102,7 +102,7 @@ const sendTokenAndChangePassword = ({ email, resetToken, newPassword }) => {
     };
 
     const changePasswordJSON = JSON.stringify(changePasswordObj);
-    console.log(emailJSON);
+    console.log(changePasswordJSON);
 
     const ajaxPasswordResetTokenRequest = $.ajax({
         method: "POST",

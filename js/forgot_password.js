@@ -5,7 +5,7 @@ import { sendTokenRequest, sendTokenAndChangePassword } from "./requests.js"
 const emailField = $("input#email"),
     emailDesc = $("label#email-desc");
 
-const resetCodeField = $("label#reset-code"),
+const resetCodeField = $("input#reset-code"),
     resetCodeDesc = $("label#reset-code-desc");
 
 
@@ -21,24 +21,24 @@ const submitEmailButton = $("input#submit-email-button"),
 const submitPasswordButton = $("input#submit-password-button"),
     submitPasswordMessage = $("p#submit-password-message");
 
-var displayEmailComponents = true;
+//var displayEmailComponents = true;
 
 $(document).ready(() => {
-    displayComponents();
+    //displayComponents();
 
     submitEmailButton.click(e => {
         e.preventDefault();
         resetElements();
-        displayComponents();
+        //displayComponents();
         const { valid, email } = checkEmailValid();
         console.log(valid);
         console.log(email);
         if (valid) {
             console.log("email is in proper email format.");
-            displayEmailComponents = false; // Hide email components
+            //displayEmailComponents = false; // Hide email components
             submitEmailMessage.text("If the email entered is associated with an account, then you were sent an email with a password reset code to enter below");
-            displayEmailComponents = false;
-            displayComponents();
+            //displayEmailComponents = false;
+            //displayComponents();
             sendTokenRequest({ email });
         }
     });
@@ -49,19 +49,21 @@ $(document).ready(() => {
         const { valid, newPassword, newPasswordConfirm } = checkValid();
         if (valid) {
             console.log("New password valid.");
-            sendTokenAndChangePassword({ newPassword });
+            const email = emailField.val();
+            const resetToken = resetCodeField.val();
+            sendTokenAndChangePassword({ email, resetToken, newPassword });
         }
     });
 });
 
-
+/*
 const displayComponents = () => {
     if (displayEmailComponents) { //show email input but hide token and password inputs
-        hidePasswordComponents();
+        //hidePasswordComponents();
         showEmailComponents();
     }
     else { //hide email Components
-        hideEmailComponents();
+        //hideEmailComponents();
         showPasswordComponents();
     }
 };
@@ -115,7 +117,7 @@ const showPasswordComponents = () => {
     $("input#password-confirm").show();
 
     $("#submit-password-button").show();
-}
+}*/
 
 // Resets elements that may be updated
 const resetElements = () => {
