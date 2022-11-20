@@ -1,5 +1,4 @@
 import { localSpringBootServerUrl, indexPageFilename, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js"
-import { displayPersonalBooks } from "./personal_listings.js"
 
 const sendTokenRequest = ({ email }) => {
     const emailObj = {
@@ -219,7 +218,6 @@ const getPersonalCollection = () => {
         console.log(data);
         console.log(bookData);
         sessionStorage.setItem( "bookList", JSON.stringify(bookData) );
-        displayPersonalBooks();
     }).fail(err => {
         console.log("Failed to retrieve personal collection.");
         let statusNo = err.status;

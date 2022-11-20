@@ -88,7 +88,7 @@ li a {
     color: #ededed;
 }
 
-.account_info, .book_info {
+.account_info, .book_info, .search_info {
     display: block;
     font-family: 'Work Sans', sans-serif;
     font-size: 20px;
@@ -100,7 +100,7 @@ li a {
     margin-left: 5%;
 }
 
-.account_info input, .book_info input, .book_info select, .book_info textarea {
+.account_info input, .book_info input, .book_info select, .book_info textarea, .search_info input {
     width: 500px;
     height: 40px;
     border-radius: 4px;
