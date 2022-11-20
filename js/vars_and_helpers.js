@@ -2,12 +2,10 @@ const localSpringBootServerUrl = "http://localhost:8080";
 const highlightInputFieldColor = "rgb(255, 0, 0)";
 const minimumBookDescriptionLength = 10, maximumBookDescriptionLength = 250;
 const indexPageFilename = "index.html", loginPageFilename = "login.html", 
-    listBookPageFilename = "list_book.html", personalListingsPageFilename = "personal_listings.html",
-    bookSearchPageFilename = "book_search.html";
+    listBookPageFilename = "list_book.html", bookListingsPageFilename = "book_listings.html";
 
 const otherLeftNavbarItems = `<li><a href=${listBookPageFilename}>List Book</a></li>` + 
-`<li><a href=${personalListingsPageFilename}>My Listings</a></li>` + 
-`<li><a href=${bookSearchPageFilename}>Search for Book</a></li>`;
+`<li><a href=${bookListingsPageFilename}>Book Listings</a></li>`;
 
 const checkStringNotEmpty = x => x != null && x.length > 0;
 
@@ -113,7 +111,7 @@ const displayBookListings = isPersonalListings => {
     }
     else {
         for (var book of bookList) {
-            $('.collection-list').find('tbody').append(
+            $(isPersonalListings ? '.collection-list' : '.search-results-list').find('tbody').append(
                 '<tr class="collection-row">'+
                     '<td>'+
                         '<button class="collection-row-content">'+
@@ -135,7 +133,7 @@ const displayBookListings = isPersonalListings => {
 };
 
 export { localSpringBootServerUrl, minimumBookDescriptionLength, maximumBookDescriptionLength, 
-    indexPageFilename, loginPageFilename, listBookPageFilename, personalListingsPageFilename,
+    indexPageFilename, loginPageFilename, listBookPageFilename, bookListingsPageFilename,
     otherLeftNavbarItems,
     checkStringNotEmpty, checkEmail, checkPassword, checkISBN, 
     checkBookDescriptionNotTooShort, checkBookDescriptionNotTooLong, 
