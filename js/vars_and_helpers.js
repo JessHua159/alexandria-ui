@@ -1,10 +1,11 @@
 const localSpringBootServerUrl = "http://localhost:8080";
 const highlightInputFieldColor = "rgb(255, 0, 0)";
 const minimumBookDescriptionLength = 10, maximumBookDescriptionLength = 250;
-const indexPageFilename = "index.html", loginPageFilename = "login.html", listBookPageFilename = "list_book.html", personalListingsPageFilename = "personal_listings.html";
+const indexPageFilename = "index.html", loginPageFilename = "login.html", 
+    listBookPageFilename = "list_book.html", bookListingsPageFilename = "book_listings.html";
 
-const otherLeftNavbarItems = '<li><a href="list_book.html">List Book</a></li> \
-<li><a href="personal_listings.html">My Listings</a></li>';
+const otherLeftNavbarItems = `<li><a href=${listBookPageFilename}>List Book</a></li>` + 
+`<li><a href=${bookListingsPageFilename}>Book Listings</a></li>`;
 
 const checkStringNotEmpty = x => x != null && x.length > 0;
 
@@ -67,12 +68,18 @@ const checkPassword = password => {
 };
 
 const checkISBN = isbn => {
+    if (!checkStringNotEmpty(isbn)) {
+        return false;
+    }
+
     let numNumbers = 0;
     for (let i = 0; i < isbn.length; i++) {
         const c = isbn[i];
-        if (!isNaN(c)) {
+        if (!isNaN(c) && c !== " ") {
             numNumbers++;
-        }   
+        } else if (c !== "-" && c !== " ") {
+            return false;
+        }
     }
 
     return (numNumbers == 13);
@@ -96,10 +103,39 @@ const highlightText = (ele, newColor) => ele.css("color", newColor);
 
 const resetStyle = element => element.attr("style", "");
 
+const displayBookListings = isPersonalListings => {
+    var bookList = isPersonalListings ? JSON.parse(window.sessionStorage.getItem("personalBookList")) : 
+                    JSON.parse(window.sessionStorage.getItem("searchedBookList"));
+    if (!bookList || bookList.length === 0) {
+        //If No Books
+    }
+    else {
+        for (var book of bookList) {
+            $(isPersonalListings ? '.collection-list' : '.search-results-list').find('tbody').append(
+                '<tr class="collection-row">'+
+                    '<td>'+
+                        '<button class="collection-row-content">'+
+                            ' <div class="list-div">'+
+                                '<img src="images/book-add.png" class="collection-book-image">'+
+                                //'<img src="images/minus-button.png" class="remove-element-button">'+
+                                `<div>${book.name}</div>`+
+                                `<div class="collection-book-attr">ISBN: ${book.isbn}</div>`+
+                                `<div class="collection-book-attr">Condition: ${book.condition}</div>`+
+                                `<div class="collection-book-attr">${(book.forExchange) ? "For Exchange" : "For Give Away"}</div>`+
+                                `<div class="collection-book-attr">Description: ${book.description}</div>`+
+                                '</div>'+
+                            '</button>'+
+                        '</td>'+
+                   '</tr>'
+            );
+        }
+    }
+};
+
 export { localSpringBootServerUrl, minimumBookDescriptionLength, maximumBookDescriptionLength, 
-    indexPageFilename, loginPageFilename, listBookPageFilename, personalListingsPageFilename,
+    indexPageFilename, loginPageFilename, listBookPageFilename, bookListingsPageFilename,
     otherLeftNavbarItems,
     checkStringNotEmpty, checkEmail, checkPassword, checkISBN, 
     checkBookDescriptionNotTooShort, checkBookDescriptionNotTooLong, 
-    highlightInputField, highlightText, resetStyle };
-
+    highlightInputField, highlightText, resetStyle,
+    displayBookListings };

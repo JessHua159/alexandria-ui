@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="main.css">
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <script type="module" src="js/navbar.js"></script>
-    <script type="module" src="js/personal_listings.js"></script>
+    <script type="module" src="js/book_listings.js"></script>
 
-    <title>Alexandria - Personal Listings</title>
+    <title>Alexandria - Book Listings</title>
 </head>
 <body>
 <!-- navbar for website navigation -->
@@ -33,12 +33,13 @@
 
 <!-- header -->
 <header>
-    <h1>Personal Listings</h1>
+    <h1>Book Listings</h1>
 </header>
 
 <!-- book information section -->
 <section class="book-info">
     <div class="container">
+        <h2>Your Listings</h2>
         <form action="#">
             <div class="book-collection">
                 <table class="collection-list">
@@ -49,8 +50,38 @@
             </div>
         </form>
     </div>
+    <button type="submit" class="submit-button" id="submit-button" value="List Book"><a href="list_book.html">List Book</a></button>
 </section>
-<button type="submit" class="submit-button" id="submit-button" value="List Book"><a href="list_book.html">List Book</a></button>
+
+ <!-- search information section -->
+ <section class="search-info">
+    <h2>Search for other Book Listings</h2>
+    <div class="container">
+        <form action="#">
+            <label id="book-search" for="book-search">Search for Book</label><br>
+            <label class="desc" id="book-search-desc">Enter a book name or ISBN</label>
+            <input type="text" id="book-search" value=""><br>
+
+            <input type="submit" class="submit-button" id="submit-button" value="Search">
+            <p id="submit-message"></p>
+        </form>
+    </div>
+</section>
+
+<!-- search results section -->
+<section class="book-info">
+    <div class="container">
+        <form action="#">
+            <div class="book-collection">
+                <table class="search-results-list">
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</section>
 
 </body>
 </html>
