@@ -1,5 +1,5 @@
 import { checkStringNotEmpty, checkBookDescriptionNotTooShort, checkBookDescriptionNotTooLong,
-    highlightInputField, highlightText, resetStyle, displayBooks } from "./vars_and_helpers.js";
+    highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js";
 import { getPersonalCollection } from "./requests.js"
 
 
@@ -8,7 +8,6 @@ const submitButton = $("input#submit-button"),
 
 $(document).ready(() => {
     getPersonalCollection();
-    displayBooks();
 
     $('.remove-element-button').click(function() {
         console.log("TEST");

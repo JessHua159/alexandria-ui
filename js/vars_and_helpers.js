@@ -70,12 +70,18 @@ const checkPassword = password => {
 };
 
 const checkISBN = isbn => {
+    if (!checkStringNotEmpty(isbn)) {
+        return false;
+    }
+
     let numNumbers = 0;
     for (let i = 0; i < isbn.length; i++) {
         const c = isbn[i];
-        if (!isNaN(c)) {
+        if (!isNaN(c) && c !== " ") {
             numNumbers++;
-        }   
+        } else if (c !== "-" && c !== " ") {
+            return false;
+        }
     }
 
     return (numNumbers == 13);
@@ -99,8 +105,9 @@ const highlightText = (ele, newColor) => ele.css("color", newColor);
 
 const resetStyle = element => element.attr("style", "");
 
-const displayBooks = () => {
-    var bookList = JSON.parse(window.sessionStorage.getItem("bookList"));
+const displayBookListings = isPersonalListings => {
+    var bookList = isPersonalListings ? JSON.parse(window.sessionStorage.getItem("personalBookList")) : 
+                    JSON.parse(window.sessionStorage.getItem("searchedBookList"));
     if (!bookList || bookList.length === 0) {
         //If No Books
     }
@@ -133,5 +140,4 @@ export { localSpringBootServerUrl, minimumBookDescriptionLength, maximumBookDesc
     checkStringNotEmpty, checkEmail, checkPassword, checkISBN, 
     checkBookDescriptionNotTooShort, checkBookDescriptionNotTooLong, 
     highlightInputField, highlightText, resetStyle,
-    displayBooks };
-
+    displayBookListings };

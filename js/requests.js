@@ -1,4 +1,4 @@
-import { localSpringBootServerUrl, indexPageFilename, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js"
+import { localSpringBootServerUrl, indexPageFilename, highlightInputField, highlightText, resetStyle, displayBookListings } from "./vars_and_helpers.js"
 
 const sendTokenRequest = ({ email }) => {
     const emailObj = {
@@ -217,13 +217,13 @@ const getPersonalCollection = () => {
         var bookData = data.data;
         console.log(data);
         console.log(bookData);
-        sessionStorage.setItem( "bookList", JSON.stringify(bookData) );
+        sessionStorage.setItem( "personalBookList", JSON.stringify(bookData) );
+        displayBookListings(true);
     }).fail(err => {
         console.log("Failed to retrieve personal collection.");
         let statusNo = err.status;
     });
 };
-
 
 
 // Checks that user is logged in via the token session storage
@@ -256,7 +256,6 @@ const sendBookInfo = ({ isbn, name, condition, description, listingOption }) => 
 
     const bookInfoJSON = JSON.stringify(bookInfo);
 
-    console.log(sessionStorage.getItem("token"));
     const ajaxRequestToSendBookInfo = $.ajax({
         method: "POST",
         url: `${localSpringBootServerUrl}/api/book`,
@@ -277,4 +276,28 @@ const sendBookInfo = ({ isbn, name, condition, description, listingOption }) => 
     })
 }
 
-export { sendAccountInfo, loginUser, checkUserLoggedIn, sendTokenRequest, sendTokenAndChangePassword, sendBookInfo, getPersonalCollection };
+// Sends ajax request to get book listings from search term
+const sendBookSearchInfo = ({ searchTerm, isISBN }) => {
+    const searchQuery = `${isISBN ? "isbn" : "name"}=${searchTerm}`;
+
+    const ajaxRequestToSendBookSearchInfo = $.ajax({
+        method: "GET",
+        url: `${localSpringBootServerUrl}/api/book?${searchQuery}`,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem("token")
+        },
+        crossDomain: true
+    });
+
+    ajaxRequestToSendBookSearchInfo.done(data => {
+        var bookData = data.data;
+        $("p#submit-message").text(bookData.length > 0 ? `Search result for ${searchTerm}` : `No search results for ${searchTerm}`);
+        sessionStorage.setItem( "searchedBookList", JSON.stringify(bookData) );
+        displayBookListings(false);
+    }).fail(err => {
+        $("p#submit-message").text(`There is an error with send book search info. Return code: ${err.status}. Error: ${err.statusText}`);
+    })
+}
+
+export { sendAccountInfo, loginUser, checkUserLoggedIn, sendTokenRequest, sendTokenAndChangePassword, sendBookInfo, getPersonalCollection, sendBookSearchInfo };
