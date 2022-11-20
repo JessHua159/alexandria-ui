@@ -103,15 +103,26 @@ const highlightText = (ele, newColor) => ele.css("color", newColor);
 
 const resetStyle = element => element.attr("style", "");
 
-const displayBookListings = isPersonalListings => {
-    var bookList = isPersonalListings ? JSON.parse(window.sessionStorage.getItem("personalBookList")) : 
-                    JSON.parse(window.sessionStorage.getItem("searchedBookList"));
+// Fills in the other selectors
+async function displayBookListings(isSearchResult) {
+    var bookList = isSearchResult ? JSON.parse(window.sessionStorage.getItem("searchedBookList")) :
+                    JSON.parse(window.sessionStorage.getItem("personalBookList"));
+
     if (!bookList || bookList.length === 0) {
         //If No Books
     }
     else {
         for (var book of bookList) {
-            $(isPersonalListings ? '.collection-list' : '.search-results-list').find('tbody').append(
+            let ownerInfoEntry = isSearchResult ? `<div class="collection-book-attr" id="owner-info">Owner: ${book.owner}</div>` : '';
+
+            let optionEntry = '<div class="collection-book-attr" id="select-option"></div>'
+            if (isSearchResult) {  
+                // if (sessionStorage.getItem("email") == book.owner) { optionEntry = '<div class="collection-book-attr selection-option">Your Listing</div>' }
+                // else { optionEntry = `<div class="collection-book-attr"><a>Request Book</a></div>` }
+                optionEntry = `<div class="collection-book-attr" id="request-option"><a>Request Book</a></div>`;
+            }
+
+            $(isSearchResult ? '.search-results-list' : '.collection-list').find('tbody').append(
                 '<tr class="collection-row">'+
                     '<td>'+
                         '<button class="collection-row-content">'+
@@ -123,6 +134,8 @@ const displayBookListings = isPersonalListings => {
                                 `<div class="collection-book-attr">Condition: ${book.condition}</div>`+
                                 `<div class="collection-book-attr">${(book.forExchange) ? "For Exchange" : "For Give Away"}</div>`+
                                 `<div class="collection-book-attr">Description: ${book.description}</div>`+
+                                ownerInfoEntry +
+                                optionEntry +
                                 '</div>'+
                             '</button>'+
                         '</td>'+
@@ -130,6 +143,12 @@ const displayBookListings = isPersonalListings => {
             );
         }
     }
+
+    console.log("From displayBookListings: ");
+    console.log($("#owner-info"));
+    console.log($("#request-option"));
+    
+    return { ownerInfo: $("#owner-info"), requestOption: $("#request-option") };
 };
 
 export { localSpringBootServerUrl, minimumBookDescriptionLength, maximumBookDescriptionLength, 

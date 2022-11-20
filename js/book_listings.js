@@ -9,6 +9,11 @@ const submitButton = $("input#submit-button"),
 
 const searchResultsList = $("table.search-results-list");
 
+let otherSelectors = null;
+
+let ownerInfo = $("#owner-info");
+let requestOption = $("#request-option");
+
 $(document).ready(() => {
     getPersonalCollection();
 
@@ -23,8 +28,24 @@ $(document).ready(() => {
         const { valid, searchTerm, isISBN } = checkBookSearchInfoValid();
         if (valid) {
             console.log("Search information valid.");
+
             searchResultsList.html("<tbody></tbody>");
-            sendBookSearchInfo({ searchTerm, isISBN });
+
+            // attempt to get other selectors from return value of sendBookSearchInfo
+            otherSelectors = sendBookSearchInfo({ searchTerm, isISBN });    // unable to use await here
+
+            console.log(otherSelectors);
+
+            ownerInfo = $("#owner-info");
+            requestOption = $("#request-option");
+
+            console.log(ownerInfo)
+            console.log(requestOption);
+
+            // otherSelectors.requestOption.click(e => {
+            //     e.preventDefault();
+            //     print("book request");
+            // });
         }
     });
 });

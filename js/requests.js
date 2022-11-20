@@ -160,6 +160,7 @@ const loginUser = ({ email, password }, fromAccountCreation) => {
         // stores jwt token to session storage
         sessionStorage.setItem("token", data.jwt);   
         sessionStorage.setItem("firstName", data.firstName);
+        // sessionStorage.setItem("email", data.username)
 
         // user gets taken to relevant page after login
         let pageAfterLogin = sessionStorage.getItem("pageAfterLogin");
@@ -218,7 +219,7 @@ const getPersonalCollection = () => {
         console.log(data);
         console.log(bookData);
         sessionStorage.setItem( "personalBookList", JSON.stringify(bookData) );
-        displayBookListings(true);
+        displayBookListings(false);
     }).fail(err => {
         console.log("Failed to retrieve personal collection.");
         let statusNo = err.status;
@@ -277,8 +278,11 @@ const sendBookInfo = ({ isbn, name, condition, description, listingOption }) => 
 }
 
 // Sends ajax request to get book listings from search term
-const sendBookSearchInfo = ({ searchTerm, isISBN }) => {
+// Gets the other selectors
+async function sendBookSearchInfo({ searchTerm, isISBN }) {
     const searchQuery = `${isISBN ? "isbn" : "name"}=${searchTerm}`;
+
+    let otherSelectors = null;
 
     const ajaxRequestToSendBookSearchInfo = $.ajax({
         method: "GET",
@@ -294,10 +298,12 @@ const sendBookSearchInfo = ({ searchTerm, isISBN }) => {
         var bookData = data.data;
         $("p#submit-message").text(bookData.length > 0 ? `Search result for ${searchTerm}` : `No search results for ${searchTerm}`);
         sessionStorage.setItem( "searchedBookList", JSON.stringify(bookData) );
-        displayBookListings(false);
+        otherSelectors = displayBookListings(true);
     }).fail(err => {
         $("p#submit-message").text(`There is an error with send book search info. Return code: ${err.status}. Error: ${err.statusText}`);
-    })
+    });
+
+    return otherSelectors;
 }
 
 export { sendAccountInfo, loginUser, checkUserLoggedIn, sendTokenRequest, sendTokenAndChangePassword, sendBookInfo, getPersonalCollection, sendBookSearchInfo };
