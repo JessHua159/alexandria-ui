@@ -7,7 +7,7 @@ $(document).ready(() => {
     if (isLoggedIn) {
         $("#other-left-navbar-items-toggle").html(otherLeftNavbarItems);
         $("#login-or-logout-toggle").html('<a href="index.html">Logout</a>');
-        $("#profile-username-toggle").html(`<a href="#">Hi ${sessionStorage.getItem("firstName")}</a>`);
+        $("#profile-username-toggle").html(`<a href="#">Hi ${sessionStorage.getItem("email")}</a>`);
         $("#token-display-toggle").html('<span>(token icon)</span> Tokens: <span id="token-count">0</span>')
     } else {
         $("#login-or-logout-toggle").html('<a href="login.html">Login</a>');

@@ -1,5 +1,5 @@
 import { checkStringNotEmpty, checkISBN, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js";
-import { getPersonalCollection, sendBookSearchInfo } from "./requests.js"
+import { getPersonalCollection, sendBookSearchInfo, getBookExchangeInfo } from "./requests.js"
 
 const bookSearchDesc = $("label#book-search-desc"), originalBookSearchDescText = bookSearchDesc.text(),
     bookSearchField = $("input#book-search");
@@ -9,7 +9,13 @@ const submitButton = $("input#submit-button"),
 
 const searchResultsList = $("table.search-results-list");
 
+let otherSelectors = null;
+
+let ownerInfo = $("#owner-info");
+let requestOption = $("#request-option");
+
 $(document).ready(() => {
+    getBookExchangeInfo();
     getPersonalCollection();
 
     $('.remove-element-button').click(function() {
@@ -23,6 +29,7 @@ $(document).ready(() => {
         const { valid, searchTerm, isISBN } = checkBookSearchInfoValid();
         if (valid) {
             console.log("Search information valid.");
+
             searchResultsList.html("<tbody></tbody>");
             sendBookSearchInfo({ searchTerm, isISBN });
         }
