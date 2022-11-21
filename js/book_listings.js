@@ -1,5 +1,5 @@
 import { checkStringNotEmpty, checkISBN, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js";
-import { getPersonalCollection, sendBookSearchInfo } from "./requests.js"
+import { getPersonalCollection, sendBookSearchInfo, getBookExchangeInfo } from "./requests.js"
 
 const bookSearchDesc = $("label#book-search-desc"), originalBookSearchDescText = bookSearchDesc.text(),
     bookSearchField = $("input#book-search");
@@ -15,6 +15,7 @@ let ownerInfo = $("#owner-info");
 let requestOption = $("#request-option");
 
 $(document).ready(() => {
+    getBookExchangeInfo();
     getPersonalCollection();
 
     $('.remove-element-button').click(function() {
@@ -30,22 +31,7 @@ $(document).ready(() => {
             console.log("Search information valid.");
 
             searchResultsList.html("<tbody></tbody>");
-
-            // attempt to get other selectors from return value of sendBookSearchInfo
-            otherSelectors = sendBookSearchInfo({ searchTerm, isISBN });    // unable to use await here
-
-            console.log(otherSelectors);
-
-            ownerInfo = $("#owner-info");
-            requestOption = $("#request-option");
-
-            console.log(ownerInfo)
-            console.log(requestOption);
-
-            // otherSelectors.requestOption.click(e => {
-            //     e.preventDefault();
-            //     print("book request");
-            // });
+            sendBookSearchInfo({ searchTerm, isISBN });
         }
     });
 });

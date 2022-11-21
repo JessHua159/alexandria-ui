@@ -159,8 +159,9 @@ const loginUser = ({ email, password }, fromAccountCreation) => {
 
         // stores jwt token to session storage
         sessionStorage.setItem("token", data.jwt);   
-        sessionStorage.setItem("firstName", data.firstName);
-        // sessionStorage.setItem("email", data.username)
+        // sessionStorage.setItem("firstName", data.firstName);
+        console.log(data);
+        sessionStorage.setItem("email", data.email);
 
         // user gets taken to relevant page after login
         let pageAfterLogin = sessionStorage.getItem("pageAfterLogin");
@@ -274,15 +275,12 @@ const sendBookInfo = ({ isbn, name, condition, description, listingOption }) => 
         window.location = indexPageFilename;
     }).fail(err => {
         $("p#submit-message").text(`There is an error with add book info. Return code: ${err.status}. Error: ${err.statusText}`);
-    })
+    });
 }
 
 // Sends ajax request to get book listings from search term
-// Gets the other selectors
-async function sendBookSearchInfo({ searchTerm, isISBN }) {
+const sendBookSearchInfo = ({ searchTerm, isISBN }) => {
     const searchQuery = `${isISBN ? "isbn" : "name"}=${searchTerm}`;
-
-    let otherSelectors = null;
 
     const ajaxRequestToSendBookSearchInfo = $.ajax({
         method: "GET",
@@ -298,12 +296,107 @@ async function sendBookSearchInfo({ searchTerm, isISBN }) {
         var bookData = data.data;
         $("p#submit-message").text(bookData.length > 0 ? `Search result for ${searchTerm}` : `No search results for ${searchTerm}`);
         sessionStorage.setItem( "searchedBookList", JSON.stringify(bookData) );
-        otherSelectors = displayBookListings(true);
+        const otherSelectors = displayBookListings(true);
+        
+        otherSelectors.requestOption.click(function(e) {
+            e.preventDefault();
+            
+            const firstPartyId = $(this).parent().children(".owner-info").text().substring(7), 
+                firstPartyBookId = $(this).parent().children(".book-id").text(),
+                firstPartyBookName = $(this).parent().children(".book-name").text(),
+                firstPartyBookISBN = $(this).parent().children(".book-isbn").text().substring(6);
+
+            if ($(this).parent().text().includes("For Exchange")) {
+                $(this).html("Select book from your listing to exchange.");
+                otherSelectors.selectOption.html("<a>Select book listing</a>");
+
+                // user selects listed book to exchange
+                otherSelectors.selectOption.click(function(e) {
+                    e.preventDefault();
+
+                    const otherPartyId = sessionStorage.getItem("email"),
+                        otherPartyBookId = $(this).parent().children(".book-id").text(),
+                        otherPartyBookName = $(this).parent().children(".book-name").text(),
+                        otherPartyBookISBN = $(this).parent().children(".book-isbn").text().substring(6);
+
+                    createBookExchange({ firstPartyId, firstPartyBookId, firstPartyBookName, firstPartyBookISBN, 
+                        otherPartyId, otherPartyBookId, otherPartyBookName, otherPartyBookISBN });
+                    
+                    otherSelectors.selectOption.html("");
+                });
+            }
+
+            if (otherSelectors.requestOption.parent().text().includes("For Give Away")) {
+                console.log("book for donation");
+            }
+        });
     }).fail(err => {
         $("p#submit-message").text(`There is an error with send book search info. Return code: ${err.status}. Error: ${err.statusText}`);
     });
-
-    return otherSelectors;
 }
 
-export { sendAccountInfo, loginUser, checkUserLoggedIn, sendTokenRequest, sendTokenAndChangePassword, sendBookInfo, getPersonalCollection, sendBookSearchInfo };
+const createBookExchange = ({ firstPartyId, firstPartyBookId, firstPartyBookName, firstPartyBookISBN, 
+    otherPartyId, otherPartyBookId, otherPartyBookName, otherPartyBookISBN }) => {
+
+    const exchangeInfo = {
+        "firstPartyId": firstPartyId,
+        "firstPartyBookId": firstPartyBookId,
+        "otherPartyId": otherPartyId,
+        "otherPartyBookId": otherPartyBookId,
+    };
+
+    const exchangeInfoJSON = JSON.stringify(exchangeInfo);
+
+    const ajaxRequestToCreateBookExchange = $.ajax({
+        method: "POST",
+        url: `${localSpringBootServerUrl}/api/book/exchange`,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem("token")
+        },
+        data: exchangeInfoJSON,
+        crossDomain: true
+    });
+
+    ajaxRequestToCreateBookExchange.done(data => {
+        $("ul#notifications").html(`<li>You have requested book from ${firstPartyId} with name ${firstPartyBookName} and ISBN ${firstPartyBookISBN} in exchange for your book with name ${otherPartyBookName} and ISBN ${otherPartyBookISBN}.</li>`);
+    }).fail(err => {
+        $("ul#notifications").text(`<li>There is an error with create book exchange. Return code: ${err.status}. Error: ${err.statusText}</li>`);
+    });
+};
+
+// Gets information about book exchange(s) that a user has initiated or is at the receiving end of
+const getBookExchangeInfo = () => {
+    const ajaxRequestToGetBookExchangeInfo = $.ajax({
+        method: "GET",
+        url: `${localSpringBootServerUrl}/api/book/exchange`,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem("token")
+        },
+        crossDomain: true
+    });
+
+    ajaxRequestToGetBookExchangeInfo.done(data => {
+        console.log(data);
+
+        let notificationsHTML = '';
+        const loggedInUserEmail = sessionStorage.getItem("email");
+        const bookExchangesInfo = data.data;
+
+        for (const bookExchangeInfo of bookExchangesInfo) {
+            if (loggedInUserEmail == bookExchangeInfo.otherPartyId) {
+                notificationsHTML += `<li>You have requested a book from ${bookExchangeInfo.firstPartyId} with name (something) and ISBN (something) in exchange for your book with name (something) and ISBN (something).</li>`;
+            } else if (loggedInUserEmail == bookExchangeInfo.firstPartyId) {
+                notificationsHTML += `<li>${bookExchangeInfo.otherPartyId} would like to exchange book with name (something) and ISBN (something) with your book with name (something) and ISBN (something).    `;
+                notificationsHTML += `<div class="notification-buttons"><button class="submit-button" id="accept-exchange">Accept</button><button class="submit-button" id="reject-exchange">Reject</button></div></li>`;
+            } 
+        }
+
+        $("ul#notifications").html(notificationsHTML);
+    }).fail(err => {
+        $("ul#notifications").html(`<li>There is an error with get book exchange information. Return code: ${err.status}. Error: ${err.statusText}</li>`);
+    });
+};
+
+export { sendAccountInfo, loginUser, checkUserLoggedIn, sendTokenRequest, sendTokenAndChangePassword, sendBookInfo, getPersonalCollection, sendBookSearchInfo, getBookExchangeInfo };

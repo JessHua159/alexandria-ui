@@ -103,8 +103,7 @@ const highlightText = (ele, newColor) => ele.css("color", newColor);
 
 const resetStyle = element => element.attr("style", "");
 
-// Fills in the other selectors
-async function displayBookListings(isSearchResult) {
+const displayBookListings = isSearchResult => {
     var bookList = isSearchResult ? JSON.parse(window.sessionStorage.getItem("searchedBookList")) :
                     JSON.parse(window.sessionStorage.getItem("personalBookList"));
 
@@ -113,13 +112,18 @@ async function displayBookListings(isSearchResult) {
     }
     else {
         for (var book of bookList) {
-            let ownerInfoEntry = isSearchResult ? `<div class="collection-book-attr" id="owner-info">Owner: ${book.owner}</div>` : '';
+            let ownerInfoEntry = '';
+            if (isSearchResult) {
+                ownerInfoEntry = `<div class="collection-book-attr owner-info">Owner: ${book.owner}</div>`;
+                if (sessionStorage.getItem("email") == book.owner) {
+                    ownerInfoEntry = '<div class="collection-book-attr">Your Listing</div>';
+                }
+            }
 
-            let optionEntry = '<div class="collection-book-attr" id="select-option"></div>'
+            let optionEntry = '<div class="collection-book-attr select-option"></div>';
             if (isSearchResult) {  
-                // if (sessionStorage.getItem("email") == book.owner) { optionEntry = '<div class="collection-book-attr selection-option">Your Listing</div>' }
-                // else { optionEntry = `<div class="collection-book-attr"><a>Request Book</a></div>` }
-                optionEntry = `<div class="collection-book-attr" id="request-option"><a>Request Book</a></div>`;
+                if (sessionStorage.getItem("email") == book.owner) { optionEntry = '' }
+                else { optionEntry = `<div class="collection-book-attr request-option"><a>Request Book</a></div>` }
             }
 
             $(isSearchResult ? '.search-results-list' : '.collection-list').find('tbody').append(
@@ -129,8 +133,9 @@ async function displayBookListings(isSearchResult) {
                             ' <div class="list-div">'+
                                 '<img src="images/book-add.png" class="collection-book-image">'+
                                 //'<img src="images/minus-button.png" class="remove-element-button">'+
-                                `<div>${book.name}</div>`+
-                                `<div class="collection-book-attr">ISBN: ${book.isbn}</div>`+
+                                `<div class="book-id">${book.id}</div>`+
+                                `<div class="book-name">${book.name}</div>`+
+                                `<div class="collection-book-attr book-isbn">ISBN: ${book.isbn}</div>`+
                                 `<div class="collection-book-attr">Condition: ${book.condition}</div>`+
                                 `<div class="collection-book-attr">${(book.forExchange) ? "For Exchange" : "For Give Away"}</div>`+
                                 `<div class="collection-book-attr">Description: ${book.description}</div>`+
@@ -144,11 +149,7 @@ async function displayBookListings(isSearchResult) {
         }
     }
 
-    console.log("From displayBookListings: ");
-    console.log($("#owner-info"));
-    console.log($("#request-option"));
-    
-    return { ownerInfo: $("#owner-info"), requestOption: $("#request-option") };
+    return { selectOption: $(".select-option"), requestOption: $(".request-option") };
 };
 
 export { localSpringBootServerUrl, minimumBookDescriptionLength, maximumBookDescriptionLength, 
