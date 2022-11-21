@@ -328,6 +328,8 @@ const sendBookSearchInfo = ({ searchTerm, isISBN }) => {
 
             if (otherSelectors.requestOption.parent().text().includes("For Give Away")) {
                 console.log("book for donation");
+                sessionStorage.setItem('exchange_book_id',firstPartyBookId);
+                window.location = "../exchange_book.html";
             }
         });
     }).fail(err => {
