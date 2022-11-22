@@ -1,5 +1,5 @@
 import { checkStringNotEmpty, checkISBN, highlightInputField, highlightText, resetStyle } from "./vars_and_helpers.js";
-import { getPersonalCollection, sendBookSearchInfo, getBookExchangeInfo } from "./requests.js"
+import { getPersonalCollection, sendBookSearchInfo } from "./requests.js"
 
 const bookSearchDesc = $("label#book-search-desc"), originalBookSearchDescText = bookSearchDesc.text(),
     bookSearchField = $("input#book-search");
@@ -15,7 +15,6 @@ let ownerInfo = $("#owner-info");
 let requestOption = $("#request-option");
 
 $(document).ready(() => {
-    getBookExchangeInfo();
     getPersonalCollection();
 
     $('.remove-element-button').click(function() {
