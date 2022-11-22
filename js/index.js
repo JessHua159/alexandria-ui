@@ -1,14 +1,10 @@
-import { checkUserLoggedIn, getBookExchangeInfo } from "./requests.js";
+import { checkUserLoggedIn } from "./requests.js";
 import { indexPageFilename, loginPageFilename, listBookPageFilename, bookListingsPageFilename } from "./vars_and_helpers.js";
 
 const listBookButton = $("button#list-book");
 const bookListingsButton = $("button#book-listings");
 
 $(document).ready(() => {
-    if (checkUserLoggedIn()) {
-        getBookExchangeInfo();
-    }
-
     sessionStorage.setItem("pageAfterLogin", indexPageFilename);
 
     listBookButton.click(e => {

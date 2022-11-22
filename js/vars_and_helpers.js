@@ -2,10 +2,12 @@ const localSpringBootServerUrl = "http://localhost:8080";
 const highlightInputFieldColor = "rgb(255, 0, 0)";
 const minimumBookDescriptionLength = 10, maximumBookDescriptionLength = 250;
 const indexPageFilename = "index.html", loginPageFilename = "login.html", 
-    listBookPageFilename = "list_book.html", bookListingsPageFilename = "book_listings.html";
+    listBookPageFilename = "list_book.html", bookListingsPageFilename = "book_listings.html",
+    exchangesPageFilename = "book_exchange.html";
 
 const otherLeftNavbarItems = `<li><a href=${listBookPageFilename}>List Book</a></li>` + 
-`<li><a href=${bookListingsPageFilename}>Book Listings</a></li>`;
+`<li><a href=${bookListingsPageFilename}>Book Listings</a></li>` + 
+`<li><a href=${exchangesPageFilename}>Exchanges</a></li>`;
 
 const checkStringNotEmpty = x => x != null && x.length > 0;
 
@@ -120,7 +122,7 @@ const displayBookListings = isSearchResult => {
                 }
             }
 
-            let optionEntry = '<div class="collection-book-attr select-option"></div>';
+            let optionEntry = '<div class="collection-book-attr"></div>';
             if (isSearchResult) {  
                 if (sessionStorage.getItem("email") == book.owner) { optionEntry = '' }
                 else { optionEntry = `<div class="collection-book-attr request-option"><a>Request Book</a></div>` }
@@ -149,13 +151,94 @@ const displayBookListings = isSearchResult => {
         }
     }
 
-    return { selectOption: $(".select-option"), requestOption: $(".request-option") };
+    return { requestOption: $(".request-option") };
+};
+
+const displayRequestExchangeInfo = (initiatedBookExchange, userBookCollection, exchangeBookInfo) => {    
+    let requestExchangeHTML = '';
+    const forExchange = exchangeBookInfo.forExchange;
+
+    if (initiatedBookExchange != null) { 
+        // Logged in account has already initiated an exchange, so cannot make another exchange
+        requestExchangeHTML += '<section>';
+        requestExchangeHTML += `<p>You have initiated an exchange with your book with id ${initiatedBookExchange.firstPartyBookId}<br>with ${initiatedBookExchange.otherPartyId}'s book with id ${initiatedBookExchange.otherPartyBookId}.<br>Until that exchange has been completed, you cannot make another exchange.</p>`;
+        requestExchangeHTML += '</section>';
+    } else {
+        // Logged in account has requested book, but not initiated the exchange.
+        requestExchangeHTML += '<section>';
+
+        if (forExchange) {
+            requestExchangeHTML += '<select name="user_books" id="user_books_list">';
+            requestExchangeHTML += '</select>';
+        }
+        
+        requestExchangeHTML += '<p>Book name: <span class="other_party_book_name"></span></p>';
+        requestExchangeHTML += '<p>Book ISBN: <span class="other_party_book_isbn"></span></p>';
+        requestExchangeHTML += '<p>Book owner: <span class="other_party_user"></span></p>';
+        requestExchangeHTML += '</section>';
+        requestExchangeHTML += '<section class="exchange-page-buttons">';
+        requestExchangeHTML += '<button type="button" class="submit-button" id="request-exchange">Request Exchange</button>';
+        requestExchangeHTML += '<button type="button" class="submit-button" id="cancel-exchange">Cancel</button>';
+        requestExchangeHTML += '</section>';
+    }
+
+    $(".request-exchange").html(requestExchangeHTML);
+
+    if (forExchange) {
+        for(let bookNum in userBookCollection) {
+            let option = `<option value='${userBookCollection[bookNum].id}' id="logged-in-user-book-name-option">${userBookCollection[bookNum].name}</option>`;
+            $('#user_books_list').append(option);
+        }
+    }
+
+    $('span.other_party_book_name').html(exchangeBookInfo.name); 
+    $('span.other_party_book_isbn').html(exchangeBookInfo.isbn);
+    $('.other_party_user').html(exchangeBookInfo.owner);  
+}
+
+const displayIncomingExchangesInfo = bookExchanges => {
+    const loggedInUserId = sessionStorage.getItem('email');
+    let incomingExchangesHTML = '';
+
+    let noIncomingExchanges = true;
+
+    for (let bookExchangeNum in bookExchanges) {
+        let bookExchange = bookExchanges[bookExchangeNum];
+        if (bookExchange.initiatorId !== null && loggedInUserId === bookExchange.firstPartyId 
+            && loggedInUserId !== bookExchange.initiatorId) {
+            if (noIncomingExchanges) {
+                noIncomingExchanges = false;
+            }
+
+            incomingExchangesHTML += '<div>';
+            incomingExchangesHTML += '<section>';
+            incomingExchangesHTML += `<p id="other-party-book-id" value=${bookExchange.otherPartyBookId}>Book name of book from ${bookExchange.initiatorId}: (name of book with id ${bookExchange.otherPartyBookId})</p>`;
+            incomingExchangesHTML += `<p>Book ISBN of book from ${bookExchange.initiatorId}: (ISBN of book with id ${bookExchange.otherPartyBookId})</p>`;
+            incomingExchangesHTML += `<p id="first-party-book-id" value=${bookExchange.firstPartyBookId}>Book name of book requested from your listings: (name of book with id ${bookExchange.firstPartyBookId})</p>`;
+            incomingExchangesHTML += `<p>Book ISBN of book requested from your listings: (ISBN of book with id ${bookExchange.firstPartyBookId})</p>`;
+            incomingExchangesHTML += '</section>';
+            incomingExchangesHTML += `<section class="exchange-page-buttons">`;
+            incomingExchangesHTML += `<button type="button" class="submit-button" id="accept-exchange" value=${bookExchange.id}>Accept</button>`;
+            incomingExchangesHTML += `<button type="button" class="submit-button" id="reject-exchange" value=${bookExchange.id}>Reject</button>`;
+            incomingExchangesHTML += `</section>`;
+            incomingExchangesHTML += '</div>'; 
+        }         
+    }
+
+    if (noIncomingExchanges) {
+        incomingExchangesHTML += "<section>";
+        incomingExchangesHTML += "<p>You have no incoming exchanges.</p>";
+        incomingExchangesHTML += "</section>";
+    }
+
+    $(".incoming-exchanges").html(incomingExchangesHTML);
 };
 
 export { localSpringBootServerUrl, minimumBookDescriptionLength, maximumBookDescriptionLength, 
-    indexPageFilename, loginPageFilename, listBookPageFilename, bookListingsPageFilename,
+    indexPageFilename, loginPageFilename, listBookPageFilename, bookListingsPageFilename, exchangesPageFilename,
     otherLeftNavbarItems,
     checkStringNotEmpty, checkEmail, checkPassword, checkISBN, 
     checkBookDescriptionNotTooShort, checkBookDescriptionNotTooLong, 
     highlightInputField, highlightText, resetStyle,
-    displayBookListings };
+    displayBookListings, 
+    displayRequestExchangeInfo, displayIncomingExchangesInfo };

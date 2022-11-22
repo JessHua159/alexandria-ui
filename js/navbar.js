@@ -8,16 +8,16 @@ $(document).ready(() => {
         $("#other-left-navbar-items-toggle").html(otherLeftNavbarItems);
         $("#login-or-logout-toggle").html('<a href="index.html">Logout</a>');
         $("#profile-username-toggle").html(`<a href="#">Hi ${sessionStorage.getItem("email")}</a>`);
-        $("#token-display-toggle").html('<span>(token icon)</span> Tokens: <span id="token-count">0</span>')
     } else {
         $("#login-or-logout-toggle").html('<a href="login.html">Login</a>');
     }
 
     $("#login-or-logout-toggle a").click(() => {
         if (isLoggedIn) {
-            // Logs user out by removing jwt token from session storage and updates navbar
+            // Logs user out by removing jwt token and account-specific variables from session storage
             sessionStorage.removeItem("token");
-            sessionStorage.removeItem("firstName");
+            sessionStorage.removeItem("email");
+            sessionStorage.removeItem("exchange_book_id");
             window.location = "index.html";
         }
     });
