@@ -125,7 +125,7 @@ const displayBookListings = isSearchResult => {
             let optionEntry = '<div class="collection-book-attr"></div>';
             if (isSearchResult) {  
                 if (sessionStorage.getItem("email") == book.owner) { optionEntry = '' }
-                else { optionEntry = `<div class="collection-book-attr request-option"><a>Request Book</a></div>` }
+                else { optionEntry = `<div class="collection-book-attr request-option"><a id="request_book_btn">Request Book</a></div>` }
             }
 
             $(isSearchResult ? '.search-results-list' : '.collection-list').find('tbody').append(
