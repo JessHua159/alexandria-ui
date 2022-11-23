@@ -460,15 +460,43 @@ const getRequestExchangeInfoAndDisplay = bookExchanges => {
                         }
                 
                         let exchangeData = {};
-                        const exchangeBookInfo = sessionStorage.getItem("exchangeBookInfo");
-                
-                        exchangeData.firstPartyId = sessionStorage.getItem('email');
-                        exchangeData.otherPartyId = exchangeBookInfo.owner;
-                        exchangeData.firstPartyBookId = sessionStorage.getItem('exchange_book_id');
-                        exchangeData.otherPartyBookId = selectedBook;
-                        exchangeData.initiatorId = sessionStorage.getItem('email');
-                
-                        createBookExchange(exchangeData);
+                        // const exchangeBookInfo = sessionStorage.getItem("exchangeBookInfo");
+                        let exchangeBookInfo = null;
+                        const exchangeBookId = sessionStorage.getItem("exchange_book_id");
+                        const fetchBookByIdURL = `http://localhost:8080/api/book/${exchangeBookId}`;
+                        $.ajax({
+                            method: "GET",
+                            url: fetchBookByIdURL,
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": "Bearer " + jwt
+                            },
+                            crossDomain: true,
+                            statusCode:{
+                                200: function(response){
+                                    exchangeBookInfo = response.data;
+                                    console.log("Book details:");
+                                    console.log(exchangeBookInfo);
+
+                                    exchangeData.firstPartyId = sessionStorage.getItem('email');
+                                    exchangeData.otherPartyId = exchangeBookInfo.owner;
+                                    exchangeData.firstPartyBookId = sessionStorage.getItem('exchange_book_id');
+                                    exchangeData.otherPartyBookId = selectedBook;
+                                    exchangeData.initiatorId = sessionStorage.getItem('email');
+                            
+                                    createBookExchange(exchangeData);
+                                },
+                                400: function(response){
+                                    console.log(`Failed to get book details for ID: ${exchangeBookId} for exchanging!`);
+                                    alert("Oopss..Some error occurred!!")
+                                },
+                                500: function(response){
+                                    console.log(`Failed to get book details for ID: ${exchangeBookId} for exchanging!`);
+                                    alert("Oopss..Some error occurred!!")
+                                }
+                            }
+                        });
+
                     });
                 
                     $("#cancel-exchange").click(function(){
