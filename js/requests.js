@@ -52,7 +52,44 @@ const sendAccountInfo = ({ universityName, firstName, lastName, email, password 
         },
         data: accountInfoJSON,
         // dataType: "json",
-        crossDomain: true
+        crossDomain: true,
+        success: function(response){
+            alert("User account created successfully");
+            $("#submit-button").hide();
+            let emailConfirmationCodeField = `<label for="emailConfirmation">Account confirmation code:</label><input type="text" id="emailConfirmation" name="emailConfirmation"><br>`;
+            let emailConfirmationButton = '<button type="button" id="acc_verification_btn">Verify code</button>';
+            let output = emailConfirmationCodeField + emailConfirmationButton;
+            $("#acc_creation_form").append(output);
+
+            $("#acc_verification_btn").click(function (e) { 
+                e.preventDefault();
+                const validationCode = $("#emailConfirmation").val();
+                const validationData = JSON.stringify({
+                    "email": email,
+                    "validationCode": validationCode
+                });
+                $.ajax({
+                    method: "POST",
+                    url: `${localSpringBootServerUrl}/api/verifyUser`,
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    data: validationData,
+                    // dataType: "json",
+                    crossDomain: true,
+                    statusCode:{
+                        200: function(response){
+                            alert("Account successfully validated!");
+                            window.location="index.html";
+                        },
+                        400: function(response){
+                            alert("Account validation failed!");
+                        }
+                    },
+                    
+                });
+            });
+        }
     });
 
     // .done() for success:
