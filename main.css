@@ -238,3 +238,15 @@ select#user_books_list {
     margin-bottom: 2%;
     margin-left: 4%;
 }
+
+.WAITING{
+    color: #ff9e22;
+}
+
+.ACTIVE{
+    color: #41c300;
+}
+
+.DONE{
+    color: #5300e8;
+}

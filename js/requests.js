@@ -371,12 +371,12 @@ const getExchangesInfoAndUpdateDOMElements = () => {
         getRequestExchangeInfoAndDisplay(data.data);
         displayIncomingExchangesInfo(data.data);
 
-        $("#accept-exchange").click(function () {
+        $(".accept-exchange").click(function () {
             console.log("accept exchange");
             acceptExchange($(this), $(this).val());
         });
     
-        $("#reject-exchange").click(function () {
+        $(".reject-exchange").click(function () {
             console.log("reject exchange");
             rejectExchange($(this).val());
         });
@@ -480,8 +480,8 @@ const getRequestExchangeInfoAndDisplay = bookExchanges => {
 
                                     exchangeData.firstPartyId = sessionStorage.getItem('email');
                                     exchangeData.otherPartyId = exchangeBookInfo.owner;
-                                    exchangeData.firstPartyBookId = sessionStorage.getItem('exchange_book_id');
-                                    exchangeData.otherPartyBookId = selectedBook;
+                                    exchangeData.firstPartyBookId =  selectedBook;
+                                    exchangeData.otherPartyBookId = sessionStorage.getItem('exchange_book_id');
                                     exchangeData.initiatorId = sessionStorage.getItem('email');
                             
                                     createBookExchange(exchangeData);
