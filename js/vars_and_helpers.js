@@ -225,18 +225,37 @@ const displayIncomingExchangesInfo = bookExchanges => {
                 noIncomingExchanges = false;
             }
 
+            // incomingExchangesHTML += '<div>';
+            // incomingExchangesHTML += '<section>';
+            // incomingExchangesHTML += `<p id="other-party-book-id" value=${bookExchange.otherPartyBookId}>Book name of book from ${bookExchange.initiatorId}: (name of book with id ${bookExchange.otherPartyBookId})</p>`;
+            // incomingExchangesHTML += `<p>Book ISBN of book from ${bookExchange.initiatorId}: (ISBN of book with id ${bookExchange.otherPartyBookId})</p>`;
+            // incomingExchangesHTML += `<p id="first-party-book-id" value=${bookExchange.firstPartyBookId}>Book name of book requested from your listings: (name of book with id ${bookExchange.firstPartyBookId})</p>`;
+            // incomingExchangesHTML += `<p>Book ISBN of book requested from your listings: (ISBN of book with id ${bookExchange.firstPartyBookId})</p>`;
+            // incomingExchangesHTML += '</section>';
+            // incomingExchangesHTML += `<section class="exchange-page-buttons">`;
+            // incomingExchangesHTML += `<button type="button" class="submit-button" id="accept-exchange" value=${bookExchange.id}>Accept</button>`;
+            // incomingExchangesHTML += `<button type="button" class="submit-button" id="reject-exchange" value=${bookExchange.id}>Reject</button>`;
+            // incomingExchangesHTML += `</section>`;
+            // incomingExchangesHTML += '</div>'; 
+
+
             incomingExchangesHTML += '<div>';
             incomingExchangesHTML += '<section>';
-            incomingExchangesHTML += `<p id="other-party-book-id" value=${bookExchange.otherPartyBookId}>Book name of book from ${bookExchange.initiatorId}: (name of book with id ${bookExchange.otherPartyBookId})</p>`;
-            incomingExchangesHTML += `<p>Book ISBN of book from ${bookExchange.initiatorId}: (ISBN of book with id ${bookExchange.otherPartyBookId})</p>`;
-            incomingExchangesHTML += `<p id="first-party-book-id" value=${bookExchange.firstPartyBookId}>Book name of book requested from your listings: (name of book with id ${bookExchange.firstPartyBookId})</p>`;
-            incomingExchangesHTML += `<p>Book ISBN of book requested from your listings: (ISBN of book with id ${bookExchange.firstPartyBookId})</p>`;
+
+            incomingExchangesHTML += `<div class = "incoming_exchange_books_div" id="first-party-book-id" value=${bookExchange.firstPartyBookId}>${bookExchange.otherPartyId} is interested in your book ${bookExchange.firstPartyBookDetails.name}</div>`
+            incomingExchangesHTML += `<div class = "incoming_exchange_books_div">${bookExchange.otherPartyId}'s book details:</div>`
+            incomingExchangesHTML += `<div class = "incoming_exchange_books_div" id="other-party-book-id" value=${bookExchange.otherPartyBookId}>Book name: ${bookExchange.otherPartyBookDetails.name}</div>`
+            incomingExchangesHTML += `<div class = "incoming_exchange_books_div">Book ISBN: ${bookExchange.otherPartyBookDetails.isbn}</div>`
+            incomingExchangesHTML += `<div class = "incoming_exchange_books_div">Book condition: ${bookExchange.otherPartyBookDetails.condition}</div>`
+            incomingExchangesHTML += `<div class = "incoming_exchange_books_div">Book description: ${bookExchange.otherPartyBookDetails.description}</div>`
             incomingExchangesHTML += '</section>';
-            incomingExchangesHTML += `<section class="exchange-page-buttons">`;
-            incomingExchangesHTML += `<button type="button" class="submit-button" id="accept-exchange" value=${bookExchange.id}>Accept</button>`;
-            incomingExchangesHTML += `<button type="button" class="submit-button" id="reject-exchange" value=${bookExchange.id}>Reject</button>`;
+            incomingExchangesHTML += `<section class="exchange-page-buttons">`
+            incomingExchangesHTML += `<button type="button" class="submit-button accept-exchange" value=${bookExchange.id}>Accept</button>`;
+            incomingExchangesHTML += `<button type="button" class="submit-button reject-exchange" value=${bookExchange.id}>Reject</button>`;
             incomingExchangesHTML += `</section>`;
             incomingExchangesHTML += '</div>'; 
+
+
         }         
     }
 

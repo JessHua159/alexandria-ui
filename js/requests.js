@@ -371,12 +371,12 @@ const getExchangesInfoAndUpdateDOMElements = () => {
         getRequestExchangeInfoAndDisplay(data.data);
         displayIncomingExchangesInfo(data.data);
 
-        $("#accept-exchange").click(function () {
+        $(".accept-exchange").click(function () {
             console.log("accept exchange");
             acceptExchange($(this), $(this).val());
         });
     
-        $("#reject-exchange").click(function () {
+        $(".reject-exchange").click(function () {
             console.log("reject exchange");
             rejectExchange($(this).val());
         });
