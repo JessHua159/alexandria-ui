@@ -116,6 +116,7 @@ const displayBookListings = isSearchResult => {
         for (var book of bookList) {
             let ownerInfoEntry = '';
             if (isSearchResult) {
+                if(book.status==2)continue;
                 ownerInfoEntry = `<div class="collection-book-attr owner-info">Owner: ${book.owner}</div>`;
                 if (sessionStorage.getItem("email") == book.owner) {
                     ownerInfoEntry = '<div class="collection-book-attr">Your Listing</div>';
@@ -123,9 +124,14 @@ const displayBookListings = isSearchResult => {
             }
 
             let optionEntry = '<div class="collection-book-attr"></div>';
+            let bookCollectionStatus = '';
             if (isSearchResult) {  
                 if (sessionStorage.getItem("email") == book.owner) { optionEntry = '' }
-                else { optionEntry = `<div class="collection-book-attr request-option"><a id="request_book_btn">Request Book</a></div>` }
+                else { optionEntry = `<div class="collection-book-attr request-option"><a class="request_book_btn">Request Book</a></div>` }
+            }else{
+                console.log(book.status);
+                const listingStatus = book.status==0?'WAITING':(book.status==1?'ACTIVE':'DONE');
+                bookCollectionStatus=`<div class="collection-book-attr ${listingStatus}">${listingStatus}</div>`;
             }
 
             $(isSearchResult ? '.search-results-list' : '.collection-list').find('tbody').append(
@@ -142,7 +148,7 @@ const displayBookListings = isSearchResult => {
                                 `<div class="collection-book-attr">${(book.forExchange) ? "For Exchange" : "For Give Away"}</div>`+
                                 `<div class="collection-book-attr">Description: ${book.description}</div>`+
                                 ownerInfoEntry +
-                                optionEntry +
+                                optionEntry + bookCollectionStatus +
                                 '</div>'+
                             '</button>'+
                         '</td>'+
@@ -160,9 +166,16 @@ const displayRequestExchangeInfo = (initiatedBookExchange, userBookCollection, e
 
     if (initiatedBookExchange != null) { 
         // Logged in account has already initiated an exchange, so cannot make another exchange
+        // requestExchangeHTML += '<section>';
+        // requestExchangeHTML += `<p>You have initiated an exchange with your book with id ${initiatedBookExchange.firstPartyBookId}<br>with ${initiatedBookExchange.otherPartyId}'s book with id ${initiatedBookExchange.otherPartyBookId}.<br>Until that exchange has been completed, you cannot make another exchange.</p>`;
+        // requestExchangeHTML += '</section>';
+
         requestExchangeHTML += '<section>';
-        requestExchangeHTML += `<p>You have initiated an exchange with your book with id ${initiatedBookExchange.firstPartyBookId}<br>with ${initiatedBookExchange.otherPartyId}'s book with id ${initiatedBookExchange.otherPartyBookId}.<br>Until that exchange has been completed, you cannot make another exchange.</p>`;
+        requestExchangeHTML += `<div class="requested_exchanges_div">You have initiated an exchange with ${initiatedBookExchange.otherPartyId}</div>`;
+        requestExchangeHTML += `<div class="requested_exchanges_div">Your book: ${initiatedBookExchange.firstPartyBookDetails.name}</div>`;
+        requestExchangeHTML += `<div class="requested_exchanges_div">${initiatedBookExchange.otherPartyId}'s book: ${initiatedBookExchange.otherPartyBookDetails.name}</div>`;
         requestExchangeHTML += '</section>';
+
     } else {
         // Logged in account has requested book, but not initiated the exchange.
         requestExchangeHTML += '<section>';
@@ -180,12 +193,14 @@ const displayRequestExchangeInfo = (initiatedBookExchange, userBookCollection, e
         requestExchangeHTML += '<button type="button" class="submit-button" id="request-exchange">Request Exchange</button>';
         requestExchangeHTML += '<button type="button" class="submit-button" id="cancel-exchange">Cancel</button>';
         requestExchangeHTML += '</section>';
+        
     }
 
     $(".request-exchange").html(requestExchangeHTML);
 
     if (forExchange) {
         for(let bookNum in userBookCollection) {
+            if(userBookCollection[bookNum].status==2)continue;
             let option = `<option value='${userBookCollection[bookNum].id}' id="logged-in-user-book-name-option">${userBookCollection[bookNum].name}</option>`;
             $('#user_books_list').append(option);
         }

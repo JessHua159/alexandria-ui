@@ -480,8 +480,8 @@ const getRequestExchangeInfoAndDisplay = bookExchanges => {
 
                                     exchangeData.firstPartyId = sessionStorage.getItem('email');
                                     exchangeData.otherPartyId = exchangeBookInfo.owner;
-                                    exchangeData.firstPartyBookId = sessionStorage.getItem('exchange_book_id');
-                                    exchangeData.otherPartyBookId = selectedBook;
+                                    exchangeData.firstPartyBookId =  selectedBook;
+                                    exchangeData.otherPartyBookId = sessionStorage.getItem('exchange_book_id');
                                     exchangeData.initiatorId = sessionStorage.getItem('email');
                             
                                     createBookExchange(exchangeData);
