@@ -26,6 +26,7 @@ const submitButton = $("input#submit-button"),
     submitMessage = $("p#submit-message");
 
 $(document).ready(() => {
+    $("#university-choices").hide();
     submitButton.click(e => {
         e.preventDefault();
         resetElements();
@@ -37,6 +38,36 @@ $(document).ready(() => {
         }
     });
 
+    const universityList = [
+        'Rensselaer Polytechnic Institute',
+        'Marywood University'
+    ];
+    $("input#university").on("keyup", function (e) {
+        $("#choices").remove();
+        const search_text=$("input#university").val();
+        if(search_text!==''){
+            const matchingNames = universityList.filter(name=>name.toLowerCase().includes(search_text.toLowerCase()));
+            console.log(matchingNames)
+            let choiceList = '<div id="choices">';
+            for(let i in matchingNames){
+                const name=matchingNames[i];
+                choiceList+=`<div id="${i}">${name}</div>`;
+            }
+            choiceList+="</div>";
+            $("#university-choices").append(choiceList);
+            $("#university-choices").show();
+        }else{
+            $("#university-choices").hide();
+        }
+    });
+
+    $("#university-choices").click(function(e){
+        const id=e.target.id;
+        console.log(e.target.id);
+        const choice = $(`#choices #${id}`).text();
+        $("#university").val(choice);
+        $("#university-choices").hide();
+    });
 });
 
 // Resets elements that may be updated

@@ -250,3 +250,14 @@ select#user_books_list {
 .DONE{
     color: #5300e8;
 }
+
+#university-choices{
+    width: 400px;
+    background-color: #ff5252;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: relative;
+    z-index: 2;
+}
