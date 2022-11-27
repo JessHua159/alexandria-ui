@@ -185,7 +185,7 @@ const displayRequestExchangeInfo = (initiatedBookExchange, userBookCollection, e
     } else {
         // Logged in account has requested book, but not initiated the exchange.
         requestExchangeHTML += '<section>';
-
+        console.log("Exchange? :" + forExchange);
         if (forExchange) {
             requestExchangeHTML += '<select name="user_books" id="user_books_list">';
             requestExchangeHTML += '</select>';
@@ -196,7 +196,12 @@ const displayRequestExchangeInfo = (initiatedBookExchange, userBookCollection, e
         requestExchangeHTML += '<p>Book owner: <span class="other_party_user"></span></p>';
         requestExchangeHTML += '</section>';
         requestExchangeHTML += '<section class="exchange-page-buttons">';
-        requestExchangeHTML += '<button type="button" class="submit-button" id="request-exchange">Request Exchange</button>';
+        if(forExchange){
+            requestExchangeHTML += '<button type="button" class="submit-button" id="request-exchange">Request Exchange</button>';
+        }
+        else{
+            requestExchangeHTML += '<button type="button" class="submit-button" id="request-exchange">Request Giveaway</button>';
+        }
         requestExchangeHTML += '<button type="button" class="submit-button" id="cancel-exchange">Cancel</button>';
         requestExchangeHTML += '</section>';
         
