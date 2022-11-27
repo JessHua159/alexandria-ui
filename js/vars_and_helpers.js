@@ -5,8 +5,8 @@ const indexPageFilename = "index.html", loginPageFilename = "login.html",
     listBookPageFilename = "list_book.html", bookListingsPageFilename = "book_listings.html",
     exchangesPageFilename = "book_exchange.html";
 
-const otherLeftNavbarItems = `<li><a href=${listBookPageFilename}>List Book</a></li>` + 
-`<li><a href=${bookListingsPageFilename}>Book Listings</a></li>` + 
+const otherLeftNavbarItems = `<li><a href=${listBookPageFilename}>List a book</a></li>` + 
+`<li><a href=${bookListingsPageFilename}>Your book listings</a></li>` + 
 `<li><a href=${exchangesPageFilename}>Exchanges & Giveaways</a></li>`;
 
 const checkStringNotEmpty = x => x != null && x.length > 0;
@@ -172,7 +172,15 @@ const displayRequestExchangeInfo = (initiatedBookExchange, userBookCollection, e
 
         requestExchangeHTML += '<section>';
         requestExchangeHTML += `<fieldset class="fieldset_class">`
-        requestExchangeHTML += `<legend class="requested_exchanges_div">You have initiated an exchange with ${initiatedBookExchange.otherPartyId}</legend>`;
+
+        if(initiatedBookExchange.firstPartyBookId){
+            requestExchangeHTML += `<legend class="requested_exchanges_div">You have initiated an exchange with ${initiatedBookExchange.otherPartyId}</legend>`;
+        }
+        else{
+            requestExchangeHTML += `<legend class="requested_exchanges_div">You have requested for a giveaway from ${initiatedBookExchange.otherPartyId}</legend>`;
+
+        }
+
         if(initiatedBookExchange.firstPartyBookDetails){
             requestExchangeHTML += `<div class="requested_exchanges_div">Your book: ${initiatedBookExchange.firstPartyBookDetails.name}</div>`;
         }

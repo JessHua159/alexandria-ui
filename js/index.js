@@ -10,9 +10,13 @@ $(document).ready(() => {
 
     if(userEmail){
         $('.create_account_menu').hide();
+        $('.search_bar').show();
     }
     else{
         $('.create_account_menu').show();
+        $('.logo_big').css({"color":"#ff1744"});
+        $('.search_bar').hide();
+        
     }
 
     sessionStorage.setItem("pageAfterLogin", indexPageFilename);

@@ -21,16 +21,19 @@ $(document).ready(() => {
         console.log("TEST");
     });
 
-    submitButton.click(e => {
-        e.preventDefault();
-        resetSearchInformationElements();
-
-        const { valid, searchTerm, isISBN } = checkBookSearchInfoValid();
-        if (valid) {
-            console.log("Search information valid.");
-
-            searchResultsList.html("<tbody></tbody>");
-            sendBookSearchInfo({ searchTerm, isISBN });
+    $('.search_bar').keyup(e => {
+        var keyId = e.keyCode || 0;
+        if(keyId == 13){
+            e.preventDefault();
+            resetSearchInformationElements();
+    
+            const { valid, searchTerm, isISBN } = checkBookSearchInfoValid();
+            if (valid) {
+                console.log("Search information valid.");
+    
+                searchResultsList.html("<tbody></tbody>");
+                sendBookSearchInfo({ searchTerm, isISBN });
+            }
         }
     });
 });

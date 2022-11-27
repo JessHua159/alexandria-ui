@@ -56,8 +56,8 @@ const sendAccountInfo = ({ universityName, firstName, lastName, email, password 
         success: function(response){
             alert("User account created successfully");
             $("#submit-button").hide();
-            let emailConfirmationCodeField = `<label for="emailConfirmation">Account confirmation code:</label><input type="text" id="emailConfirmation" name="emailConfirmation"><br>`;
-            let emailConfirmationButton = '<button type="button" id="acc_verification_btn">Verify code</button>';
+            let emailConfirmationCodeField = `<label for="emailConfirmation">Account confirmation code</label><br><input type="text" id="emailConfirmation" name="emailConfirmation"><br>`;
+            let emailConfirmationButton = '<button type="button" class="submit-button" id="acc_verification_btn">Verify code</button>';
             let output = emailConfirmationCodeField + emailConfirmationButton;
             $("#acc_creation_form").append(output);
 

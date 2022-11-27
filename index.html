@@ -12,6 +12,7 @@
         <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
         <script type="module" src="js/navbar.js"></script>
         <script type="module" src="js/index.js"></script>
+        <script type="module" src="js/book_listings.js"></script>
 
         <title>Alexandria</title>
     </head>
@@ -19,7 +20,7 @@
         <!-- navbar for website navigation -->
         <div class="navbar">
             <div class="container">
-                <a class="logo" href="index.html">Alexandria</a>
+                <!-- <a class="logo" href="index.html">Alexandria</a> -->
                 <ul class="left-nav">
                     <span id="other-left-navbar-items-toggle"></span>
                     <li><a href="create_account.html" class="create_account_menu">Create Account</a></li>
@@ -34,13 +35,45 @@
         
         <!-- header -->
         <header>
-            <h1>Free Book Exchange</h1>
+            <h1 class="logo_big">Alexandria</h1>
         </header>
 
         <!-- index page buttons -->
-        <section class="index-page-buttons">
-            <button type="button" class="submit-button" id="list-book"><a href="list_book.html">List Book</a></button>
-            <button type="button" class="submit-button" id="book-listings"><a href="book_listings.html">View Book Listings</a></button>
+        <!-- <section class="index-page-buttons">
+            <button type="button" class="submit-button" id="list-book"><a href="list_book.html">List a book</a></button>
+            <button type="button" class="submit-button" id="book-listings"><a href="book_listings.html">View your book listings</a></button>
+        </section> -->
+         <!-- search information section -->
+        <section class="search-info">
+            <!-- <h2>Search for Book Listings</h2> -->
+            <div class="container">
+                <!-- <form action="#"> -->
+                    <!-- <label id="book-search" for="book-search">Search for Book</label><br> -->
+                    <!-- <label class="desc" id="book-search-desc">Enter a book name or ISBN</label> -->
+                    <!-- <input type="text" id="book-search" value="" class="search_bar" placeholder="Search by book name or ISBN..." autocomplete="off"><br>
+        
+                    <input type="submit" class="submit-button" id="submit-button" value="Search">
+                    <p id="submit-message"></p> -->
+                <!-- </form> -->
+                <input type="text" id="book-search" value="" class="search_bar" placeholder="Search by book name or ISBN..." autocomplete="off"><br>
+        
+                <!-- <input type="submit" class="submit-button" id="submit-button" value="Search"> -->
+                <p id="submit-message"></p>
+            </div>
+        </section>
+        <!-- search results section -->
+        <section class="book-info">
+            <div class="container">
+                <form action="#">
+                    <div class="book-collection">
+                        <table class="search-results-list">
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
         </section>
         <div class = "alexandria_image">
             <img src="/images/book.png">
