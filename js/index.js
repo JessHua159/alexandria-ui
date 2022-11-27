@@ -5,6 +5,16 @@ const listBookButton = $("button#list-book");
 const bookListingsButton = $("button#book-listings");
 
 $(document).ready(() => {
+
+    var userEmail = sessionStorage.getItem('email');
+
+    if(userEmail){
+        $('.create_account_menu').hide();
+    }
+    else{
+        $('.create_account_menu').show();
+    }
+
     sessionStorage.setItem("pageAfterLogin", indexPageFilename);
 
     listBookButton.click(e => {

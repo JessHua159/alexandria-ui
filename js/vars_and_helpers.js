@@ -7,7 +7,7 @@ const indexPageFilename = "index.html", loginPageFilename = "login.html",
 
 const otherLeftNavbarItems = `<li><a href=${listBookPageFilename}>List Book</a></li>` + 
 `<li><a href=${bookListingsPageFilename}>Book Listings</a></li>` + 
-`<li><a href=${exchangesPageFilename}>Exchanges</a></li>`;
+`<li><a href=${exchangesPageFilename}>Exchanges & Giveaways</a></li>`;
 
 const checkStringNotEmpty = x => x != null && x.length > 0;
 
@@ -171,9 +171,15 @@ const displayRequestExchangeInfo = (initiatedBookExchange, userBookCollection, e
         // requestExchangeHTML += '</section>';
 
         requestExchangeHTML += '<section>';
-        requestExchangeHTML += `<div class="requested_exchanges_div">You have initiated an exchange with ${initiatedBookExchange.otherPartyId}</div>`;
-        requestExchangeHTML += `<div class="requested_exchanges_div">Your book: ${initiatedBookExchange.firstPartyBookDetails.name}</div>`;
-        requestExchangeHTML += `<div class="requested_exchanges_div">${initiatedBookExchange.otherPartyId}'s book: ${initiatedBookExchange.otherPartyBookDetails.name}</div>`;
+        requestExchangeHTML += `<fieldset class="fieldset_class">`
+        requestExchangeHTML += `<legend class="requested_exchanges_div">You have initiated an exchange with ${initiatedBookExchange.otherPartyId}</legend>`;
+        if(initiatedBookExchange.firstPartyBookDetails){
+            requestExchangeHTML += `<div class="requested_exchanges_div">Your book: ${initiatedBookExchange.firstPartyBookDetails.name}</div>`;
+        }
+        if(initiatedBookExchange.otherPartyBookDetails){
+            requestExchangeHTML += `<div class="requested_exchanges_div">${initiatedBookExchange.otherPartyId}'s book: ${initiatedBookExchange.otherPartyBookDetails.name}</div>`;
+        }
+        requestExchangeHTML += `</fieldset>`
         requestExchangeHTML += '</section>';
 
     } else {
@@ -243,11 +249,15 @@ const displayIncomingExchangesInfo = bookExchanges => {
             incomingExchangesHTML += '<section>';
 
             incomingExchangesHTML += `<div class = "incoming_exchange_books_div" id="first-party-book-id" value=${bookExchange.firstPartyBookId}>${bookExchange.otherPartyId} is interested in your book ${bookExchange.firstPartyBookDetails.name}</div>`
-            incomingExchangesHTML += `<div class = "incoming_exchange_books_div">${bookExchange.otherPartyId}'s book details:</div>`
-            incomingExchangesHTML += `<div class = "incoming_exchange_books_div" id="other-party-book-id" value=${bookExchange.otherPartyBookId}>Book name: ${bookExchange.otherPartyBookDetails.name}</div>`
-            incomingExchangesHTML += `<div class = "incoming_exchange_books_div">Book ISBN: ${bookExchange.otherPartyBookDetails.isbn}</div>`
-            incomingExchangesHTML += `<div class = "incoming_exchange_books_div">Book condition: ${bookExchange.otherPartyBookDetails.condition}</div>`
-            incomingExchangesHTML += `<div class = "incoming_exchange_books_div">Book description: ${bookExchange.otherPartyBookDetails.description}</div>`
+            if(bookExchange.otherPartyBookId){
+                incomingExchangesHTML += `<fieldset class="fieldset_class">`
+                incomingExchangesHTML += `<legend class = "incoming_exchange_books_div">${bookExchange.otherPartyId}'s book details:</legend>`
+                incomingExchangesHTML += `<div class = "incoming_exchange_books_div" id="other-party-book-id" value=${bookExchange.otherPartyBookId}>Book name: ${bookExchange.otherPartyBookDetails.name}</div>`
+                incomingExchangesHTML += `<div class = "incoming_exchange_books_div">Book ISBN: ${bookExchange.otherPartyBookDetails.isbn}</div>`
+                incomingExchangesHTML += `<div class = "incoming_exchange_books_div">Book condition: ${bookExchange.otherPartyBookDetails.condition}</div>`
+                incomingExchangesHTML += `<div class = "incoming_exchange_books_div">Book description: ${bookExchange.otherPartyBookDetails.description}</div>`
+                incomingExchangesHTML += `</fieldset>`;
+            }
             incomingExchangesHTML += '</section>';
             incomingExchangesHTML += `<section class="exchange-page-buttons">`
             incomingExchangesHTML += `<button type="button" class="submit-button accept-exchange" value=${bookExchange.id}>Accept</button>`;

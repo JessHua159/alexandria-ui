@@ -418,7 +418,7 @@ const getRequestExchangeInfoAndDisplay = bookExchanges => {
     } 
 
     if (id == null && initiatedBookExchange != null) {
-        id = initiatedBookExchange.firstPartyBookId;
+        id = initiatedBookExchange.firstPartyBookId?initiatedBookExchange.firstPartyBookId: initiatedBookExchange.otherPartyBookId;
     }
 
     const get_book_url = "http://localhost:8080/api/book/"+id;
