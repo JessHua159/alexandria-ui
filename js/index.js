@@ -5,6 +5,20 @@ const listBookButton = $("button#list-book");
 const bookListingsButton = $("button#book-listings");
 
 $(document).ready(() => {
+
+    var userEmail = sessionStorage.getItem('email');
+
+    if(userEmail){
+        $('.create_account_menu').hide();
+        $('.search_bar').show();
+    }
+    else{
+        $('.create_account_menu').show();
+        $('.logo_big').css({"color":"#ff1744"});
+        $('.search_bar').hide();
+        
+    }
+
     sessionStorage.setItem("pageAfterLogin", indexPageFilename);
 
     listBookButton.click(e => {

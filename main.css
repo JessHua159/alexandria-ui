@@ -49,24 +49,30 @@ h2 {
 }
 
 .navbar {
+    position: fixed;
+    top: 0%;
     width: 100%;
     height: 50px;
-    background-color: #ff3d3d;
+    margin-left: 5%;
+    background-color: white;
+    z-index: 5;
 }
 
 ul.left-nav {
     float: left;
     list-style-type: none;
     font-family: 'Work Sans', sans-serif;
-    font-weight: 100;
+    font-weight: 600;
+    font-size: 18px;
 }
 
 ul.right-nav {
     float: right;
-    padding-right: 25px;
+    padding-right: 130px;
     list-style-type: none;
     font-family: 'Work Sans', sans-serif;
-    font-weight: 100;
+    font-weight: 600;
+    font-size: 18px;
     width: fit-content;
 }
 
@@ -85,8 +91,11 @@ li.token-display {
 
 li a {
   display: block;
-  color: white;
+  color: black;
   text-decoration: none;
+  font-family: 'Work Sans', sans-serif;
+  border-left: 1px solid #232323;
+  padding-left: 7px;
 }
 
 .submit-button {
@@ -94,7 +103,7 @@ li a {
   cursor: pointer;
   outline: none;
   border: none;
-  background-color: #ff3d3d;
+  background-color: #ff1744;
   width: 300px;
   height: 50px;
   border-radius: 10px;
@@ -241,12 +250,95 @@ select#user_books_list {
 
 .WAITING{
     color: #ff9e22;
+    font-weight: 600;
 }
 
 .ACTIVE{
     color: #41c300;
+    font-weight: 600;
 }
 
 .DONE{
     color: #5300e8;
+    font-weight: 600;
+}
+
+#university-choices{
+    width: 400px;
+    background-color: #ff5252;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.alexandria_image{
+    float: right;
+    position:fixed;
+    bottom:0px;
+    left:65%;
+}
+
+.logo{
+    display: block;
+    color: #ff1744;
+    font-size: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    font-family: 'Work Sans', sans-serif;
+    float: left;
+}
+
+.exchange-header{
+    color: #ff1744;
+}
+
+.fieldset_class{
+    border: 1px solid #BDBDBD
+    ;
+    border-radius: 8px;
+}
+
+.search_bar{
+    width: 600px;
+    height: 60px;
+    padding-left: 3%;
+    padding-right: 2%;
+    border-radius: 30px;
+    border-color: #ff1744;
+    border-width: 4px;
+    outline: none;
+    font-size: 20px;
+    font-family: 'Work Sans', sans-serif;
+    color: #FFFFFF;
+    background-color: #ff1744;
+    border-style: hidden;
+    text-indent: 4%;
+    font-weight: 200;
+    box-shadow: 0px 5px 10px 0px rgb(0 0 0 / 50%);
+    /* margin-bottom: 0%;
+    margin-left: 10.5%; */
+}
+
+.search_bar::placeholder{
+    color: white;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 22px;
+}
+
+.logo_big{
+    font-weight: 600;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 100px;
+    margin-left: 12px;
+    margin-bottom: 10px;
+    margin-top: 250px;
+}
+
+.request-exchange{
+    width: 50%;
+    margin-left: 40px;
 }

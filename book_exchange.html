@@ -8,16 +8,19 @@
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <script type="module" src="js/navbar.js"></script>
     <script type="module" src="js/book_exchange.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@200&display=swap" rel="stylesheet">
     <title>Alexandria - Book Exchange</title>
 </head>
 <body>
     <!-- navbar for website navigation -->
     <div class="navbar">
         <div class="container">
+            <a class="logo" href="index.html">Alexandria</a>
             <ul class="left-nav">
-                <li><a class="logo" href="index.html">Alexandria</a></li>
                 <span id="other-left-navbar-items-toggle"></span>
-                <li><a href="create_account.html">Create Account</a></li>
                 <li id="login-or-logout-toggle"></li>
             </ul>
 
@@ -34,7 +37,7 @@
 
     <!-- request exchange header section -->
     <section class="request-exchange-header-section">
-        <h2>You have requested these exchange(s) or give-away(s):</h2>
+        <h2 class="exchange-header">You have requested these exchange(s) or give-away(s):</h2>
     </section>
 
     <!-- request exchange part -->
@@ -44,12 +47,15 @@
     
     <!-- incoming exchange header section -->
     <section class="incoming-exchanges-header-section">
-        <h2>Others are interested in these exchange(s) or give-away(s):</h2>
+        <h2 class="exchange-header">Others are interested in these exchange(s) or give-away(s):</h2>
     </section>
     
     <!-- incoming exchange part -->
     <div class="incoming-exchanges">
         
+    </div>
+    <div class = "alexandria_image">
+        <img src="/images/book.png">
     </div>
 </body>
 </html>

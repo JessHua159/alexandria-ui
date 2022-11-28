@@ -56,8 +56,8 @@ const sendAccountInfo = ({ universityName, firstName, lastName, email, password 
         success: function(response){
             alert("User account created successfully");
             $("#submit-button").hide();
-            let emailConfirmationCodeField = `<label for="emailConfirmation">Account confirmation code:</label><input type="text" id="emailConfirmation" name="emailConfirmation"><br>`;
-            let emailConfirmationButton = '<button type="button" id="acc_verification_btn">Verify code</button>';
+            let emailConfirmationCodeField = `<label for="emailConfirmation">Account confirmation code</label><br><input type="text" id="emailConfirmation" name="emailConfirmation"><br>`;
+            let emailConfirmationButton = '<button type="button" class="submit-button" id="acc_verification_btn">Verify code</button>';
             let output = emailConfirmationCodeField + emailConfirmationButton;
             $("#acc_creation_form").append(output);
 
@@ -418,7 +418,7 @@ const getRequestExchangeInfoAndDisplay = bookExchanges => {
     } 
 
     if (id == null && initiatedBookExchange != null) {
-        id = initiatedBookExchange.firstPartyBookId;
+        id = initiatedBookExchange.firstPartyBookId?initiatedBookExchange.firstPartyBookId: initiatedBookExchange.otherPartyBookId;
     }
 
     const get_book_url = "http://localhost:8080/api/book/"+id;
@@ -575,8 +575,8 @@ const acceptExchange = (buttonSelector, exchangeId) => {
 
 const rejectExchange = exchangeId => {
     const ajaxRequestToMarkExchangeComplete = $.ajax({
-        method: "POST",
-        url: `${localSpringBootServerUrl}/api/book/exchange/complete/${exchangeId}`,
+        method: "DELETE",
+        url: `${localSpringBootServerUrl}/api/book/exchange/reject/${exchangeId}`,
         headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem("token")
@@ -585,7 +585,7 @@ const rejectExchange = exchangeId => {
     });
 
     ajaxRequestToMarkExchangeComplete.done(data => {
-        console.log(`Exchange with id ${exchangeId} marked completed.`);
+        console.log(`Exchange with id ${exchangeId} marked rejected.`);
         window.location = bookListingsPageFilename;
     }).fail(err => {
         console.log(err);
