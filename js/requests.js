@@ -575,8 +575,8 @@ const acceptExchange = (buttonSelector, exchangeId) => {
 
 const rejectExchange = exchangeId => {
     const ajaxRequestToMarkExchangeComplete = $.ajax({
-        method: "POST",
-        url: `${localSpringBootServerUrl}/api/book/exchange/complete/${exchangeId}`,
+        method: "DELETE",
+        url: `${localSpringBootServerUrl}/api/book/exchange/reject/${exchangeId}`,
         headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem("token")
@@ -585,7 +585,7 @@ const rejectExchange = exchangeId => {
     });
 
     ajaxRequestToMarkExchangeComplete.done(data => {
-        console.log(`Exchange with id ${exchangeId} marked completed.`);
+        console.log(`Exchange with id ${exchangeId} marked rejected.`);
         window.location = bookListingsPageFilename;
     }).fail(err => {
         console.log(err);
